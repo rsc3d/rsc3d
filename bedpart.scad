@@ -35,7 +35,9 @@ module rounded_part () {
 
 union () {
     rounded_part ();
-    rotate (90, [1, 0, 0])
+    rotate (-90, [1, 0, 0])
         rotate (180, [0, 0, 1])
             rounded_part ();
+    translate ([0, 2, 2])
+        sphere (r);
 }
