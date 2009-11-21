@@ -17,7 +17,7 @@ cylh      = 15;
 eps       = 0;
 
 
-module rounded () {
+module rounded_part () {
     translate ([0, cylh, 0])
     difference () {
         translate ([0, 0, -radius + height])
@@ -33,6 +33,9 @@ module rounded () {
     }
 }
 
-rounded ();
-translate ([])
-    rounded ();
+union () {
+    rounded_part ();
+    rotate (90, [1, 0, 0])
+        rotate (180, [0, 0, 1])
+            rounded_part ();
+}
