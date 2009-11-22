@@ -6,12 +6,15 @@
 //  ----------------+   +----------------
 //                          |radius
 //
-// (radius - r)² + r² = (radius)²
+// (radius - height)² + r² = (radius)²
+// radius² -2*height*radius + height² + r² = radius²
+// 2*height*radius = height² + r²
+// radius = (height² + r²) / (2 * height)
 //
 
 height    = 7.5;
 r         = 11;
-radius    = ((height * height) + (r * r)) / r;
+radius    = ((height * height) + (r * r)) / (2 * height);
 cylh      = 15;
 slantin   = 5;
 slant     = pow (2 * slantin * slantin, 0.5);
