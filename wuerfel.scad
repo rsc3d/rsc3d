@@ -1,5 +1,4 @@
-
-module test004b()
+module cube()
 {
     difference ()
     {
@@ -12,5 +11,4 @@ module test004b()
     }
 }
 
-test004b();
-
+cube();
