@@ -81,7 +81,7 @@ module screw_hole (l, nut_start, nut_end, head_start, nut, height)
         union () {
             cylinder (h = l, r = nut [screw_channel] / 2);
             translate ([0, 0, head_start])
-                cylinder (h = l - head_start, r = nut [screw_head_channel / 2]);
+                cylinder (h = l - head_start, r = nut [screw_head_channel] / 2);
             translate ([0, 0, nut_start])
                 nut_hole (nut, nut_end - nut_start);
         }
@@ -90,15 +90,16 @@ module screw_hole (l, nut_start, nut_end, head_start, nut, height)
 module knob_body (knob_dia, axis_dia, axis_carve, conic, depth, top)
 {
     kr  = knob_dia / 2;
-    ar  = axis_dia / 2;
+    ad  = axis_dia * 1.2; // Adjust for smooth insertion
+    ar  = ad / 2;
     union () {
         difference () {
             cylinder (h = depth, r = kr);
             translate ([0, 0, top + e])
                 cylinder (h = depth - top, r = ar);
         }
-        translate ([0, (1-axis_carve) * axis_dia, depth / 2])
-            cube ([axis_dia, axis_dia, depth], center = true);
+        translate ([0, (1-axis_carve) * ad, depth / 2])
+            cube ([ad, ad, depth], center = true);
     }
 }
 
@@ -108,7 +109,7 @@ module knob (knob_dia, axis_dia, axis_carve, conic, depth, nut)
     kr      = knob_dia / 2;
     nr      = nut [nut_diameter_high] / 2;
     nh      = nut [nut_height];
-    r_i     = (axis_dia + 3.2) / 2;
+    r_i     = (axis_dia + 8) / 2;
     inner_r = sqrt (pow (nr, 2) + pow (nh + r_i, 2)) + 1;
     outer_r = 1 + sqrt (pow (inner_r, 2) + pow (nr, 2)) + nh;
     r_o     = (knob_dia - 2) / 2;
