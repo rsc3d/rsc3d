@@ -34,32 +34,23 @@ m4 = [8.0, 3.5, 4.5, 7.5, 3.0];
 // ro = x + z + wh = x + sqrt (ri² + rw²) + wh
 //
 
-module knob_hollow (outer_dia, inner_dia, height, lift, nut)
+module knob_hollow (r1, r2, r3, r4, height, lift)
 {
-    wr = nut [nut_diameter] / 2;
-    wh = nut [nut_height];
-    inner_r = sqrt (pow (wr, 2) + pow (wh + inner_dia / 2, 2)) + 1;
-    outer_r = 1 + sqrt (pow (inner_r, 2) + pow (wr, 2)) + wh;
-
     translate ([0, 0, lift])
     {
         difference () {
-            cylinder (h = height, r = inner_r);
+            cylinder (h = height, r = r2);
             translate ([0, 0, -e])
-                cylinder (h = height + 2 * e, r = inner_dia / 2);
+                cylinder (h = height + 2 * e, r = r1);
         }
-        if (outer_dia / 2 - outer_r > 1) {
+        if (r4 - r3 > 1) {
             difference () {
-                cylinder (h = height, r = outer_dia / 2);
+                cylinder (h = height, r = r4);
                 translate ([0, 0, -e])
-                    cylinder (h = height + 2 * e, r = outer_r);
+                    cylinder (h = height + 2 * e, r = r3);
             }
         }
     }
-    echo (inner_dia / 2);
-    echo (inner_r);
-    echo (outer_r);
-    echo (outer_dia / 2);
 }
 
 //module screw_hole ()
@@ -81,13 +72,20 @@ module knob_body (knob_dia, axis_dia, axis_carve, conic, depth, top)
     }
 }
 
-module knob (knob_dia, axis_dia, axis_carve, conic, depth)
+module knob (knob_dia, axis_dia, axis_carve, conic, depth, nut)
 {
-    top = 2;
+    top     = 2;
+    wr      = nut [nut_diameter] / 2;
+    wh      = nut [nut_height];
+    r_i     = (axis_dia + 3.2) / 2;
+    inner_r = sqrt (pow (wr, 2) + pow (wh + r_i, 2)) + 1;
+    outer_r = 1 + sqrt (pow (inner_r, 2) + pow (wr, 2)) + wh;
+    r_o     = (knob_dia - 2) / 2;
+
     difference () {
         knob_body   (knob_dia, axis_dia, axis_carve, conic, depth, top);
-        knob_hollow (knob_dia - 2, axis_dia + 4, depth, top, m3);
+        knob_hollow (r_i, inner_r, outer_r, r_o, depth, top);
     }
 }
 
-knob(30, 4.5, 0.25, 0, 15);
+knob(30, 4.5, 0.25, 0, 15, m3);
