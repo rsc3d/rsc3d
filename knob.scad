@@ -1,4 +1,5 @@
 e = 0.1; // epsilon
+$fn = 100;
 
 // Screws / Nuts
 // described by a K-Element vector, offsets defined as follows
@@ -121,4 +122,4 @@ module knob (knob_dia, axis_dia, axis_carve, conic, depth, nut)
     }
 }
 
-knob (30, 4.5, 0.25, 0, 15, m3);
+knob (30, 4.5, 0, 0, 15, m3);
