@@ -8,15 +8,15 @@ module peg (l, w, h, spring_d, spring_l, wire_dia, minw, filled)
     s2     = 2 * sshift;
     bck    = 1.5 * h;
     minh   = minw / 2;
-    ashift = sshift - spring_d;
-    angle  = atan (h - 2 * minw / (l - ashift));
-    echo (angle);
+    ashift = sshift - spring_d / 2;
+    cube_l = l / 6 * 5.2;
+    angle  = atan ((h - 2 * minw) / (cube_l / 2 + ashift));
     union () {
         difference () {
             union () {
                 difference () {
                     union () {
-                        cube ([l / 6 * 5.2, w, h + e], center = true);
+                        cube ([cube_l, w, h + e], center = true);
                         translate ([-(l / 6 * 5 + l / 6) / 2, 0, -(l / 6 - w)])
                             rotate ([90, 0, 0])
                                 cylinder (r = l / 12, h = w, center = true);
@@ -45,8 +45,8 @@ module peg (l, w, h, spring_d, spring_l, wire_dia, minw, filled)
                     cylinder (r = wire_dia / 2, h = w + e, center = true);
             translate ([0, 0, -l - h / 2])
                 cube (2 * l, center = true);
-            translate ([ashift / cos (angle), 0, l / cos (90 - angle) + h / 2])
-                rotate ([0, -angle, 0])
+            translate ([cube_l / 4 - ashift / 2, 0, l / cos (angle)])
+                rotate ([0, angle, 0])
                     cube (2 * l, center = true);
         }
         if (!filled) {
@@ -57,6 +57,10 @@ module peg (l, w, h, spring_d, spring_l, wire_dia, minw, filled)
             translate ([-s2 - spring_d + minh, -1.25 * minw - e, 0.375 * h+ e])
                 cube ([minw, 2.5 * minw, 1.5 * h - minw - e], center = true);
         }
+        //translate ([cube_l / 4 - ashift / 2, 0, w + 2 * minw])
+        //    cube (minw, center = true);
+        //translate ([cube_l / 4 - ashift / 2, 0, h])
+        //    cube ([cube_l / 2 + ashift, w, h], center = true);
     }
 }
 
