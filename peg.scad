@@ -45,9 +45,13 @@ module peg (l, w, h, spring_d, spring_l, wire_dia, minw, filled)
                     cylinder (r = wire_dia / 2, h = w + e, center = true);
             translate ([0, 0, -l - h / 2])
                 cube (2 * l, center = true);
-            translate ([cube_l / 4 - ashift / 2, 0, l / cos (angle)])
-                rotate ([0, angle, 0])
-                    cube (2 * l, center = true);
+            difference () {
+                translate ([cube_l / 4 - ashift / 2, 0, l / cos (angle)])
+                    rotate ([0, angle, 0])
+                        cube (2 * l, center = true);
+                translate ([-1.5 * l - sshift, 0, 0])
+                    cube (3 * l, center = true);
+                }
         }
         if (!filled) {
             translate ([-s2 - spring_d / 2, -minh - e, h / 2 + e])
@@ -64,4 +68,11 @@ module peg (l, w, h, spring_d, spring_l, wire_dia, minw, filled)
     }
 }
 
-peg (72, 9.2, 6.5, 6.5, 17.5, 1.5, 1, false);
+translate ([0, 18, 0])
+    peg (72, 9.2, 6.5, 6.5, 17.5, 1.5, 1, true);
+translate ([0, 6, 0])
+    peg (72, 9.2, 6.5, 6.5, 17.5, 1.5, 1, false);
+translate ([0, -6, 0])
+    peg (72, 9.2, 6.5, 6.5, 17.5, 1.5, 1, false);
+translate ([0, -18, 0])
+    peg (72, 9.2, 6.5, 6.5, 17.5, 1.5, 1, true);
