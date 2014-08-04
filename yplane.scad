@@ -45,4 +45,7 @@ module y_plane ()
     }
 }
 
-y_plane ();
+translate ([0, -40, 0])
+    y_plane ();
+translate ([0,  40, 0])
+    y_plane ();
