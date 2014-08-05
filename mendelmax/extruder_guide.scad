@@ -1,3 +1,4 @@
+include <nuts.scad>
 $fn=50;
 module extr ()
 {
@@ -46,6 +47,10 @@ module extr ()
         translate ([0, -16.3, 10])
             rotate ([0, 90, 0])
                 cylinder (r = 3.5 / 2, h = w + 2, center = true);
+        translate ([-8.5, -16.3, 10])
+            rotate ([0, 90, 0])
+                rotate ([0, 0, 90])
+                    nut_hole (m3, m3 [nut_height]);
         translate ([0, -16.3, 10])
             rotate ([0, 90, 0])
                 cylinder (r = 5.8, h = w / 2, center = true);
