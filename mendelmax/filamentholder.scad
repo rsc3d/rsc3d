@@ -20,6 +20,15 @@ module corner (h, w, d, ratio, angle, outer)
                 }
 }
 
+module endp (h, w, d, angle)
+{
+    amul = (angle > 0 ? 1 : -1);
+    wcub = w / cos (angle) - 2 * d * tan (abs (angle)) - e;
+    t_y  = h * tan (angle);
+    translate ([h - d / 2, t_y, (w + d) / 2 - e])
+        cube ([d, wcub, w], center = true);
+}
+
 module holder (h, w, d, angle, hole_r)
 {
     l = (h + w + 5) / cos (angle);
@@ -36,10 +45,12 @@ module holder (h, w, d, angle, hole_r)
             corner (h, w, d, 2, -angle, false);
             corner (h, w, d, 2,  angle, true);
             corner (h, w, d, 2,  angle, false);
+            endp (h, w, d, angle);
+            endp (h, w, d, -angle);
         }
         cylinder (r = hole_r + 0.5, h = 2 * d, center = true);
         translate ([h + h, 0, 0])
-            %cube (2 * h, center = true);
+            cube (2 * h, center = true);
     }
 }
 
