@@ -71,13 +71,17 @@ module mount (h, w, d, angle, nut)
     a  = abs (angle);
     cw = w + d - e;
     lm = h * tan (a);
+    sc = nut [screw_channel] / 2;
     l  = 2 * lm + w / cos (a);
-    difference () {
-        cube ([cw, l, d], center = true);
-        translate ([-d / 2,  lm, 0])
-            cylinder (r = nut [screw_channel] / 2, h = 2 * d, center = true);
-        translate ([-d / 2, -lm, 0])
-            cylinder (r = nut [screw_channel] / 2, h = 2 * d, center = true);
+    union () {
+        difference () {
+            cube ([cw, l, d], center = true);
+            translate ([-d / 2,  lm, 0])
+                cylinder (r = sc, h = 2 * d, center = true);
+            translate ([-d / 2, -lm, 0])
+                cylinder (r = sc, h = 2 * d, center = true);
+        }
+        cube (25, center = true);
     }
 }
 
@@ -88,9 +92,9 @@ angle  = 24.5;
 hole_r = 6;
 nut    = m4;
 
-mount  = false;
+mount  = true;
 test   = false;
-holder = true;
+holder = false;
 
 // measured from frame
 fangle = 30;
