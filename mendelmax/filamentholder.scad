@@ -28,20 +28,20 @@ module endp (h, w, d, angle, nut)
     rc   = nut [screw_channel] / 2;
     cw   = d; // + nut [nut_height];
     nh   = nut [nut_height] / 2;
-    translate ([h - cw / 2, t_y, (w + d) / 2 - e])
+    translate ([h - cw / 2, t_y, (w + d) / 2])
         difference () {
-            cube ([cw, wcub, w], center = true);
+            cube ([cw, wcub, w + e], center = true);
             rotate ([0, 90, 0])
             {
                 cylinder (r = rc, h = 2 * d, center = true);
-                translate ([0, 0, -nh + d / 2 + e])
+                translate ([0, 0, -d / 2 - e])
                     rotate ([0, 0, 90])
                         nut_hole (nut, nh);
             }
         }
 }
 
-module holder (h, w, d, angle, hole_r)
+module holder (h, w, d, angle, hole_r, nut)
 {
     l = (h + w + 5) / cos (angle);
     difference () {
@@ -57,8 +57,8 @@ module holder (h, w, d, angle, hole_r)
             corner (h, w, d, 2, -angle, false);
             corner (h, w, d, 2,  angle, true);
             corner (h, w, d, 2,  angle, false);
-            endp (h, w, d, angle, m4);
-            endp (h, w, d, -angle, m4);
+            endp (h, w, d, angle, nut);
+            endp (h, w, d, -angle, nut);
         }
         cylinder (r = hole_r + 0.5, h = 2 * d, center = true);
         translate ([h + h, 0, 0])
@@ -66,4 +66,50 @@ module holder (h, w, d, angle, hole_r)
     }
 }
 
-holder (160, 20, 4.3, 25, 6);
+module mount (h, w, d, angle, nut)
+{
+    a  = abs (angle);
+    cw = w + d - e;
+    lm = h * tan (a);
+    l  = 2 * lm + w / cos (a);
+    difference () {
+        cube ([cw, l, d], center = true);
+        translate ([-d / 2,  lm, 0])
+            cylinder (r = nut [screw_channel] / 2, h = 2 * d, center = true);
+        translate ([-d / 2, -lm, 0])
+            cylinder (r = nut [screw_channel] / 2, h = 2 * d, center = true);
+    }
+}
+
+h      = 150;
+w      = 20;
+d      = 4.3;
+angle  = 24.5;
+hole_r = 6;
+nut    = m4;
+
+mount  = false;
+test   = false;
+holder = true;
+
+// measured from frame
+fangle = 30;
+
+// This should be about 115mm:
+// base = 2 * h * tan (angle) - w / cos (angle);
+// echo (base);
+
+if (holder || test) {
+    holder (h, w, d, angle, hole_r, nut);
+}
+if (test) {
+    translate ([h, 0, w / 2])
+        rotate ([0, 90, 0])
+            mount  (h, w, d, angle, nut);
+}
+if (mount) {
+    translate ([-w, 0, 0])
+        mount  (h, w, d, angle, nut);
+    translate ([ w, 0, 0])
+        mount  (h, w, d, angle, nut);
+}
