@@ -66,6 +66,21 @@ module holder (h, w, d, angle, hole_r, nut)
     }
 }
 
+module clip (d, bw, cw, nl)
+{
+    nh = 4;
+    translate ([0, 0, d / 2]) {
+        rotate ([30, 0, 0]) {
+            translate ([0, bw / 2, 0]) {
+                translate ([0, 0, -cw / 2])
+                    cube ([cw, bw, cw], center = true);
+                translate ([0, 2.5 - bw / 2 + nl, nh / 2 + e])
+                    cube ([cw, 5, nh + e], center = true);
+            }
+        }
+    }
+}
+
 module mount (h, w, d, angle, nut)
 {
     a  = abs (angle);
@@ -73,15 +88,26 @@ module mount (h, w, d, angle, nut)
     lm = h * tan (a);
     sc = nut [screw_channel] / 2;
     l  = 2 * lm + w / cos (a);
-    union () {
-        difference () {
+    nl = 11.9;
+    bw = nl + 5 + 7.5;
+    //cd = 49.35;
+    cd = 88 / 2;
+    difference () {
+        union () {
             cube ([cw, l, d], center = true);
-            translate ([-d / 2,  lm, 0])
-                cylinder (r = sc, h = 2 * d, center = true);
-            translate ([-d / 2, -lm, 0])
-                cylinder (r = sc, h = 2 * d, center = true);
+            translate ([0,  cd, 0])
+                rotate ([0, 0, 180])
+                    clip (d, bw, cw, nl);
+            translate ([0, -cd, 0])
+                rotate ([0, 0,   0])
+                    clip (d, bw, cw, nl);
         }
-        cube (25, center = true);
+        translate ([-d / 2,  lm, 0])
+            cylinder (r = sc, h = 2 * d, center = true);
+        translate ([-d / 2, -lm, 0])
+            cylinder (r = sc, h = 2 * d, center = true);
+        translate ([0, 0, -15 -d / 2])
+            cube ([2 * cw, l, 30], center = true);
     }
 }
 
