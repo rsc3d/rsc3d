@@ -1,9 +1,6 @@
-module y_plane ()
+module y_plane (x, y, h)
 {
-    h  = 4.3;
     hh = h + 0.7;
-    x  = 130;
-    y  = 70;
     // max down 38 mm from current position
     // Limited by nut for mounting nut holder which must be above lower
     // frame. Lower frame is 20mm from bottom of this holder. Nut width
@@ -45,4 +42,7 @@ module y_plane ()
     }
 }
 
-y_plane ();
+h  = 4.3;
+x  = 130;
+y  = 70;
+y_plane (x, y, h);
