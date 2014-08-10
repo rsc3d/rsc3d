@@ -5,16 +5,17 @@ module rod_holder (support)
 {
     hc = m3 [screw_head_channel] / 2;
     hh = m3 [screw_head_height];
-    s1 = (11.5 - 0.5) / 2;
+    th = 0.7;
+    s1 = (11.5 - th) / 2;
     s2 = 11.5 / 4;
     difference () {
         union () {
             if (support) {
                 for (s = [-s1, -s2, 0, s2, s1]) {
                     translate ([-118 / 2, 0, s])
-                        cube ([130 - 118, 10, 0.5], center = true);
+                        cube ([130 - 118, 10, th], center = true);
                     translate ([ 118 / 2, 0, s])
-                        cube ([130 - 118, 10, 0.5], center = true);
+                        cube ([130 - 118, 10, th], center = true);
                 }
             }
             difference () {
