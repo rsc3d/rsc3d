@@ -71,8 +71,8 @@ module peg (l, w, h, spring_d, spring_l, wire_dia, minw, filled)
 translate ([0, 18, 0])
     peg (72, 9.2, 6.5, 6.5, 16.5, 1.5, 1, true);
 translate ([0, 6, 0])
-    peg (72, 9.2, 6.5, 6.5, 16.5, 1.5, 1, true);
+    peg (72, 9.2, 6.5, 6.5, 16.5, 1.5, 1, false);
 translate ([0, -6, 0])
-    peg (72, 9.2, 6.5, 6.5, 16.5, 1.5, 1, true);
+    peg (72, 9.2, 6.5, 6.5, 16.5, 1.5, 1, false);
 translate ([0, -18, 0])
     peg (72, 9.2, 6.5, 6.5, 16.5, 1.5, 1, true);
