@@ -21,7 +21,9 @@ The top-level contains the following:
 
 - ``peg.scad`` is my peg design. Thanks to the following animation by
   Clifford Wolf (thanks Clifford!) this will say more than a thousand
-  words ...
+  words ... you find the OpenSCAD animation in ``peg_animated.scad``.
+
+.. image:: https://raw.githubusercontent.com/rsc3d/rsc3d/master/animated.gif
 
 - ``stoppel.scad`` is an experiment to fix a broken screw-hole that
   didn't turn out too well when printed.
