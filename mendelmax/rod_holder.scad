@@ -1,6 +1,24 @@
 include <nuts.scad>
 use     <yplane.scad>
 
+module rod_hole (support, tr)
+{
+    translate ([tr, 0, 0])
+        cylinder (r = 4.1, h = 30, center = true);
+    translate ([tr, 0, 0])
+        rotate ([0, 0, 45])
+            translate ([0, support ? 3.5 : 0, 0])
+                cube ([1, support ? 7 : 14, 12], center = true);
+    translate ([tr, 0, 0])
+        rotate ([0, 0, -45])
+            translate ([0, support ? 3.5 : 0, 0])
+                cube ([1, support ? 7 : 14, 12], center = true);
+    if (support) {
+        translate ([tr, -4.5, 0])
+            cube ([1, 5, 12], center = true);
+    }
+}
+
 module rod_holder (support)
 {
     hc = m3 [screw_head_channel] / 2;
@@ -48,22 +66,8 @@ module rod_holder (support)
         rotate ([-90, 0, 0])
             translate ([118 / 2, 0, (18 / 2 - hh / 2 + e)])
                 cylinder (h = hh, r = hc, center = true);
-        translate ([50, 0, 0])
-            cylinder (r = 4.1, h = 30, center = true);
-        translate ([50, 0, 0])
-            rotate ([0, 0, 45])
-                cube ([1, 14, 12], center = true);
-        translate ([50, 0, 0])
-            rotate ([0, 0, -45])
-                cube ([1, 14, 12], center = true);
-        translate ([-50, 0, 0])
-            cylinder (r = 4.1, h = 30, center = true);
-        translate ([-50, 0, 0])
-            rotate ([0, 0, 45])
-                cube ([1, 14, 12], center = true);
-        translate ([-50, 0, 0])
-            rotate ([0, 0, -45])
-                cube ([1, 14, 12], center = true);
+        rod_hole (support,  50);
+        rod_hole (support, -50);
     }
 }
 
@@ -132,6 +136,8 @@ module test_rod_holder_new ()
 
 render = true;
 test   = false;
+half   = false;
+full   = false;
 
 if (render) {
     translate ([0, 22, 0])
@@ -142,6 +148,15 @@ if (render) {
         rod_holder_new (md1, md2);
     translate ([0, -22, 0])
         rod_holder_new (md1, md2);
+}
+
+if (half) {
+    rod_holder_halves ();
+}
+
+if (full) {
+    rotate ([-90, 0, 0])
+        rod_holder (true);
 }
 
 if (test) {
