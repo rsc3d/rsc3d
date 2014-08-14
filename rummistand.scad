@@ -34,6 +34,10 @@ module stand ()
                         cube ([4.7, 50, 11], center = true);
             translate ([42 - 3.75, 0, 2])
                 cube ([0.7, 63, 6], center = true);
+            translate ([42 - 3.75,  (63 - 2.7) / 2, 1])
+                cylinder (r = 2.7 / 2, h = 6, center = true);
+            translate ([42 - 3.75, -(63 - 2.7) / 2, 1])
+                cylinder (r = 2.7 / 2, h = 6, center = true);
         }
         translate ([0, 0, -50 -1])
             cube (100, center = true);
