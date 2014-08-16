@@ -1,36 +1,47 @@
 $fn = 50;
-module wpart ()
+// l: length of the gap
+// lower wall is l + corr long, higher wall is l + corr + ld long
+// w is half the width of the whole part but it extends below with
+// half-circles, the circle radius of that circle is
+// circ_r / 2 = w / 4
+// th is the thickness of the wall, gp is the thickness of the ground
+// plane. The heights of h1 and h2 are the whole wall height and the
+// lower (less long) part h2. Finally gw is the gap width (minus half
+// the wall width).
+
+module wpart (l, corr, ld, w, th, gp, h1, h2, gw)
 {
+    circ_r = w / 2;
     difference () {
         union () {
-            cube ([30, 10, 2], center = true);
-            translate ([ 15, 0 , 0])
-                cylinder (r = 5, h = 2, center = true);
-            translate ([-15, 0 , 0])
-                cylinder (r = 5, h = 2, center = true);
-            translate ([0, 0, 4])
-                cube ([30.5, 0.7, 8], center = true);
-            translate ([0, 0, (7 - 2.7) / 2 + 1 + 2.7])
-                cube ([31.5, 0.7, 7 - 2.7], center = true);
+            cube ([l, w, gp], center = true);
+            translate ([ l / 2, 0 , 0])
+                cylinder (r = circ_r, h = gp, center = true);
+            translate ([-l / 2, 0 , 0])
+                cylinder (r = circ_r, h = gp, center = true);
+            translate ([0, 0, (h1 + 1) / 2])
+                cube ([l + corr, th, h1 + 1], center = true);
+            translate ([0, 0, (h1 - h2) / 2 + gp / 2 + h2])
+                cube ([l + ld + corr, th, h1 - h2], center = true);
         }
         difference () {
             union () {
-                translate ([0, -1.5, 0])
-                    cube ([29.5 - 5, 2.5, 6], center = true);
-                translate ([ (29.5) / 2 - 2.5, -0.25, 0])
-                    cylinder (r = 2.5, h = 3, center = true);
-                translate ([-(29.5) / 2 + 2.5, -0.25, 0])
-                    cylinder (r = 2.5, h = 3, center = true);
+                translate ([0, -gw / 2, 0])
+                    cube ([l - corr - circ_r, gw, 2 * gp], center = true);
+                translate ([ (l - corr) / 2 - gw, 0, 0])
+                    cylinder (r = gw, h = 2 * gp, center = true);
+                translate ([-(l - corr) / 2 + gw, 0, 0])
+                    cylinder (r = gw, h = 2 * gp, center = true);
             }
-            translate ([0, 15 - 0.35, 0]) cube (30, center = true);
+            translate ([0, l / 2 - th / 2, 0]) cube (l, center = true);
         }
-        translate ([0, 3.35, 0])
-            cube ([42, 6, 6], center = true);
+        translate ([0, w / 2 + th / 2, 0])
+            cube ([2 * l, w, 2 * gp], center = true);
     }
-    translate ([ 15 + 2.5, 0, 0])
-        cylinder (r = 2.5, h = 2, center = true);
-    translate ([-15 - 2.5, 0, 0])
-        cylinder (r = 2.5, h = 2, center = true);
+    translate ([ l / 2 + circ_r / 2, 0, 0])
+        cylinder (r = circ_r / 2, h = gp, center = true);
+    translate ([-l / 2 - circ_r / 2, 0, 0])
+        cylinder (r = circ_r / 2, h = gp, center = true);
 }
 
-wpart ();
+wpart (30, 0.5, 1, 10, 1.4, 2, 7, 2.7, 2.5);
