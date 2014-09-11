@@ -45,17 +45,17 @@ module mousering (d_o, d_i, d_m, h, w1, w2, w3, m, n)
         }
     }
     translate ([-dia / 2 + 0.5, 0, 0])
-        cylinder (r = 0.5, h = h);
+        cylinder (r = 0.7, h = h);
     translate ([-dia / 2 + 1, n / 3, 0])
-        cylinder (r = 0.5, h = h);
+        cylinder (r = 0.7, h = h);
     translate ([-dia / 2 + 1, -n / 3, 0])
-        cylinder (r = 0.5, h = h);
+        cylinder (r = 0.7, h = h);
     translate ([ dia / 2 - 0.5, 0, 0])
-        cylinder (r = 0.5, h = h);
+        cylinder (r = 0.7, h = h);
     translate ([ dia / 2 - 1, n / 3, 0])
-        cylinder (r = 0.5, h = h);
+        cylinder (r = 0.7, h = h);
     translate ([ dia / 2 - 1, -n / 3, 0])
-        cylinder (r = 0.5, h = h);
+        cylinder (r = 0.7, h = h);
 }
 
 mousering (34.5, 15, 22, 4.35, 1.7, 1, 1.2, 4.5, 10);
