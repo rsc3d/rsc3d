@@ -23,7 +23,8 @@ module mousering (d_o, d_i, d_m, h, w1, w2, w3, m, n)
     difference () {
         union () {
             union () {
-                cylinder (r = d_o / 2 - wx, h = w1);
+                cylinder (r = d_o / 2, h = w1);
+                // Smaller outer ring doesn't work on first layer
                 translate ([0, 0, wx])
                     cylinder (r = d_o / 2, h = w3);
             }
@@ -38,11 +39,12 @@ module mousering (d_o, d_i, d_m, h, w1, w2, w3, m, n)
         cylinder (r = d_i / 2, h = 3 * h, center = true);
         translate ([0, 0, w1])
             cylinder (r = (d_m - w2) / 2, h = h);
-        cylinder (r = d_i / 2 + wx, h = 2 * wx, center = true);
-        for (i = [-5:5]) {
-            translate ([i * 2 * 0.7, 0, 0])
-                cube ([0.7, 2 * d_o, 2 * wx], center = true);
-        }
+        // Doesn't work very well on first layer
+        // cylinder (r = d_i / 2 + wx, h = 2 * wx, center = true);
+        // for (i = [-5:5]) {
+        //     translate ([i * 2 * 0.7, 0, 0])
+        //         cube ([0.7, 2 * d_o, 2 * wx], center = true);
+        // }
     }
     translate ([-dia / 2 + 0.5, 0, 0])
         cylinder (r = 0.7, h = h);
