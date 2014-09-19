@@ -1,5 +1,5 @@
 $fa = 3;
-module lmpart (h, h2, d_i, d_o, hl, hw, ns, w, nw, nl, l1, l2, bro, bri)
+module lmpart (h, h2, d_i, d_o, hl, hw, ns, w, nw, nl)
 {
     r_o = d_o / 2;
     nhl = hl  - ns;
@@ -11,9 +11,8 @@ module lmpart (h, h2, d_i, d_o, hl, hw, ns, w, nw, nl, l1, l2, bro, bri)
             cylinder (r = r_o, h = h);
             rotate ([0, 0, 90 + 45]) cube ([r_o, r_o, h2]);
             translate ([-nhl, 0, 0]) cube ([hl, hw, h2]);
-            translate ([ns - w, ns, 0]) cube ([w, hw, h]);
-            translate ([-w, hw + nw - w, 0])
-                cube ([3 * ns + w, w, h]);
+            translate ([ns - w, ns, 0]) cube ([3.5 * ns, hw, h]);
+            translate ([-w, hw + nw - w, 0]) cube ([4.9 * ns + w, w, h]);
             translate ([-nhl, -nl + nw / 2, 0]) cube ([nw, nl, h2]);
             translate ([-nhl + nw / 2, -nl + nw / 2, 0])
                 cylinder (r = nw / 2, h = h2, $fn = 20);
@@ -31,7 +30,7 @@ module bow (r_o, l1, l2, h)
     r1  = r_o;
     rx  = r_o + 5;
     difference () {
-        //minkowski () {
+        minkowski () {
             union () {
                 difference () {
                     cylinder (r = r1 + 0.5, h = 1);
@@ -42,8 +41,8 @@ module bow (r_o, l1, l2, h)
                 translate ([-l1, r1 - 0.5, 0]) cube ([l1, 1, 1]);
                 translate ([r1 - 0.5, -l2, 0]) cube ([1, l2, 1]);
             }
-            //sphere (r = h / 2);
-        //}
+            sphere (r = h / 2);
+        }
     }
 }
 
@@ -51,18 +50,27 @@ module bows (r_o, l1, l2, h, d)
 {
     ll1 = l1 - h / 2;
     ll2 = l2 - h / 2;
-    //difference () {
+    difference () {
         bow (r_o,     ll1, ll2, h);
         bow (r_o + d,  l1,  l2, h);
-    //}
+    }
 }
 
-h   = 15.5;
-r_o = 75;
-l1  = 50;
-l2  = 70;
-hw  = 23.5;
-lmpart (h, 7, 11.1, 16.7, 49.5, 14, 4, 2, 4.6, 6, 40, 60, 50, 41);
-rotate ([0, 0, 15])
-    translate ([l1, -r_o + hw / 2, h / 2])
-        bows (r_o, l1, l2, hw, 13);
+module lawnmower_part
+    (h, h2, d_i, d_o, hl, hw, ns, w, nw, nl, l1, l2, hwh, rh)
+{
+    r_o = d_o / 2;
+    difference () {
+        union () {
+            lmpart (h, h2, d_i, d_o, hl, hw, ns, w, nw, nl);
+            rotate ([0, 0, 15])
+                translate ([l1 + 2, -rh + hwh / 2 - 2, h / 2])
+                    bows (rh, l1, l2, hwh, 13);
+            rotate ([0, 0, -45]) cube ([r_o, 3.25 * r_o, h]);
+        }
+        translate ([0, 0, -h])
+            cylinder (r = d_i / 2, h = 3 * h);
+    }
+}
+
+lawnmower_part (15.5, 7, 11.1, 16.7, 49.5, 14, 4, 2, 4.6, 6, 50, 70, 23.5, 75);
