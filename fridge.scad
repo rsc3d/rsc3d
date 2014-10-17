@@ -26,25 +26,26 @@ module axis (r1, r2, r3, h1, h2, a3, a4, s)
 
 module side (a1, a2, a3, a4, h1, h2, l, m, r1, r2, r3, s, hk, hs)
 {
-    w1 = h2 / cos (a1);
-    w2 = h2 / cos (a2);
-    bc = l + w2;
     rr = h1 / 2;
+    hh = h2 - rr;
+    w1 = hh / cos (a1);
+    w2 = hh / cos (a2);
+    bc = l + w2;
     sh = rr - rr * cos (a2);
-    translate ([-h2 * tan (a2), 0, 0]) {
+    translate ([-hh * tan (a2), 0, 0]) {
         difference () {
-            translate ([0, 0, h2]) {
+            translate ([0, 0, hh]) {
                 rotate ([0, -a1, 0])
                     translate ([-l, 0, -w1])
                         cube ([l, m, w1]);
                 rotate ([0, -a2, 0])
                     translate ([-w2, 0, -w2])
                         cube ([w2, m, w2]);
-                #axis (r1, r2, r3, m + hk, m + hs, a3, a4, s);
+                axis (r1, r2, r3, m + hk, m + hs, a3, a4, s);
             }
             translate ([-bc, -bc, -2 * bc])
                 cube (2 * bc);
-            translate ([bc + h2 * tan (a2) - sh, 0, 0])
+            translate ([bc + hh * tan (a2) - sh, 0, 0])
                 cube (2 * bc, center = true);
         }
     }
