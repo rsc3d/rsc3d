@@ -51,8 +51,24 @@ module side (a1, a2, a3, a4, h1, h2, l, m, r1, r2, r3, s, hk, hs)
     }
 }
 
-module fridge (l, w, h1, h2, m, r, a1, a2, a3, a4, r1, r2, r3, s, hk, hs)
+module cut (l, w, m, h1, hu)
 {
+    dm = m * 2 / 3;
+    ru = h1 / 2;
+    translate ([l - dm, w / 2 + hu / 2, ru - m + dm])
+    {
+        translate ([0, -hu / 2, h1 / 2 - dm])
+            cube ([2.9 * ru, hu, 2 * ru], center = true);
+        rotate ([90, 0, 0])
+            cylinder (r = ru, h = hu);
+    }
+}
+
+module fridge
+    (l, w, h1, h2, m, r, a1, a2, a3, a4, r1, r2, r3, s, hk, hs, d1, d2)
+{
+    hm = (d1 - 2 * d2);
+    ha = (w / 2 - m - d1 / 2 - hm - d2);
     difference () {
         union () {
             translate ([0, 0, -m]) {
@@ -76,6 +92,16 @@ module fridge (l, w, h1, h2, m, r, a1, a2, a3, a4, r1, r2, r3, s, hk, hs)
         rotate ([-90, 0, 0])
             translate ([0, 0, -w / 2])
                 cylinder (r = r, h = 2 * w);
+        translate ([0, 0, -2 * l - m])
+            cube (4 * l, center = true);
+        translate ([0, -(d1 + hm) / 2, 0])
+            cut (l, w, m, h1, hm);
+        translate ([0,  (d1 + hm) / 2, 0])
+            cut (l, w, m, h1, hm);
+        translate ([0,  ha / 2 - w / 2 + m, 0])
+            cut (l, w, m, h1, ha);
+        translate ([0, -ha / 2 + w / 2 - m, 0])
+            cut (l, w, m, h1, ha);
     }
 }
 
@@ -83,8 +109,9 @@ r2 = 8;
 a4 = acos ((5 * 5 - r2 * r2 - r2 * r2) / (-2 * r2 * r2));
 hk = 4.05 - 2.2;
 hs = 5.5  - 3.5;
-r  = 9;
+r  = 10.5;
 h1 = 10;
 l  = 68 - r - h1 / 2; // 54
 
-fridge (l, 30, h1, 24, 3.3, r, 18, 40, -20, a4, 3.5, r2, 40, 9.5, hk, hs);
+fridge
+    (l, 30, h1, 24, 3.3, r, 18, 40, -20, a4, 3.5, r2, 40, 9.5, hk, hs, 6, 0.9);
