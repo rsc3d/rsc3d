@@ -3,12 +3,13 @@ include <nuts.scad>;
 
 module axis (r1, r2, r3, h1, h2, a3, a4, s)
 {
-    translate ([-0.3 + s * sin (a3),      0, -r3 - s * cos (a3)])
-        cube ([0.6, h1, r3]);
-    translate ([       s * sin (a3) - r1, 0, -r3 - s * cos (a3)])
-        cube ([0.6, h1, r3]);
-    translate ([-0.6 + s * sin (a3) + r1, 0, -r3 - s * cos (a3)])
-        cube ([0.6, h1, r3]);
+    sup = 0.8;
+    translate ([-sup / 2 + s * sin (a3),      0, -r3 - s * cos (a3)])
+        cube ([sup, h1, r3]);
+    translate ([           s * sin (a3) - r1, 0, -r3 - s * cos (a3)])
+        cube ([sup, h1, r3]);
+    translate ([-sup +     s * sin (a3) + r1, 0, -r3 - s * cos (a3)])
+        cube ([sup, h1, r3]);
     rotate ([-90, 0, 0]) {
         rotate ([0, 0, -a3]) {
             translate ([0, s, 0]) {
