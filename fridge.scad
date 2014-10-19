@@ -1,4 +1,5 @@
 // Refrigerator part
+include <nuts.scad>;
 
 module axis (r1, r2, r3, h1, h2, a3, a4, s)
 {
@@ -49,8 +50,6 @@ module side (a1, a2, a3, a4, h1, h2, l, m, r1, r2, r3, s, hk, hs)
                         cube ([w2, m, w2]);
                 axis (r1, r2, r3, m + hk, m + hs, a3, a4, s);
             }
-            translate ([-bc, -bc, -2 * bc])
-                cube (2 * bc);
             translate ([bc + hh * tan (a2) - sh, 0, 0])
                 cube (2 * bc, center = true);
         }
@@ -70,11 +69,23 @@ module cut (l, w, m, h1, hu)
     }
 }
 
+module screw (r, m)
+{
+    m3w = m3 [screw_channel] / 2;
+    m3h = m3 [screw_head_channel] / 2;
+    cylinder (r = m3w, h = 2 * r + 4 * m, center = true);
+    translate ([0, 0, -(r + 2 * m + 0.01)])
+        cylinder (r = m3h, h = m3 [screw_head_height]);
+    translate ([0, 0,  (r + 2 * m - m3 [nut_height] + 0.01)])
+        rotate ([0, 0, 90])
+            nut_hole (m3, m3 [nut_height]);
+}
+
 module fridge
     (l, w, h1, h2, m, r, a1, a2, a3, a4, r1, r2, r3, s, hk, hs, d1, d2)
 {
-    hm = (d1 - 2 * d2);
-    ha = (w / 2 - m - d1 / 2 - hm - d2);
+    hm  = (d1 - 2 * d2);
+    ha  = (w / 2 - m - d1 / 2 - hm - d2);
     difference () {
         union () {
             translate ([0, 0, -m]) {
@@ -108,6 +119,12 @@ module fridge
             cut (l, w, m, h1, ha);
         translate ([0, -ha / 2 + w / 2 - m, 0])
             cut (l, w, m, h1, ha);
+        rotate ([0, 85, 0]) {
+            translate ([0, w * 1 / 4, 0])
+                screw (r, m);
+            translate ([0, w * 3 / 4, 0])
+                screw (r, m);
+        }
     }
 }
 
@@ -120,4 +137,4 @@ h1 = 10;
 l  = 68 - r - h1 / 2; // 54
 
 fridge
-    (l, 30, h1, 24, 3.3, r, 18, 40, -20, a4, 3.5, r2, 40, 9.5, hk, hs, 6, 0.9);
+    (l, 30, h1, 24, 3.3, r, 18, 40, -22, a4, 3.5, r2, 40, 9.5, hk, hs, 6, 0.9);
