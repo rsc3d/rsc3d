@@ -3,7 +3,7 @@ include <nuts.scad>;
 
 module axis (r1, r2, r3, h1, h2, a3, a4, s)
 {
-    sup = 0.8;
+    sup = 0.0;
     translate ([-sup / 2 + s * sin (a3),      0, -r3 - s * cos (a3)])
         cube ([sup, h1, r3]);
     translate ([           s * sin (a3) - r1, 0, -r3 - s * cos (a3)])
@@ -138,4 +138,4 @@ h1 = 10;
 l  = 68 - r - h1 / 2; // 54
 
 fridge
-    (l, 30, h1, 24, 3.3, r, 18, 40, -22, a4, 3.5, r2, 40, 9.5, hk, hs, 6, 0.9);
+    (l, 30, h1, 24, 3.3, r, 18, 40, -15, a4, 3.5, r2, 40, 9.5, hk, hs, 6, 0.9);
