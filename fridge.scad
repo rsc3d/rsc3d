@@ -1,15 +1,11 @@
 // Refrigerator part
 include <nuts.scad>;
 
-module axis (r1, r2, r3, h1, h2, a3, a4, s)
+module axis (r1, r2, r3, h1, h2, a3, a4, s, m)
 {
-    sup = 0.0;
-    translate ([-sup / 2 + s * sin (a3),      0, -r3 - s * cos (a3)])
-        cube ([sup, h1, r3]);
-    translate ([           s * sin (a3) - r1, 0, -r3 - s * cos (a3)])
-        cube ([sup, h1, r3]);
-    translate ([-sup +     s * sin (a3) + r1, 0, -r3 - s * cos (a3)])
-        cube ([sup, h1, r3]);
+    sup = 0.8;
+    translate ([-sup / 2 + s * sin (a3), m + 0.8, -r3 - r1 - s * cos (a3) + .2])
+        cube ([sup, h1 - m, r3]);
     rotate ([-90, 0, 0]) {
         rotate ([0, 0, -a3]) {
             translate ([0, s, 0]) {
@@ -49,7 +45,7 @@ module side (a1, a2, a3, a4, h1, h2, l, m, r1, r2, r3, s, hk, hs)
                 rotate ([0, -a2, 0])
                     translate ([-w2, 0, -w2])
                         cube ([w2, m, w2]);
-                axis (r1, r2, r3, m + hk, m + hs, a3, a4, s);
+                axis (r1, r2, r3, m + hk, m + hs, a3, a4, s, m);
             }
             translate ([bc + hh * tan (a2) - sh, 0, 0])
                 cube (2 * bc, center = true);
@@ -63,7 +59,7 @@ module cut (l, w, m, h1, hu)
     ru = h1 / 2;
     translate ([l - dm, w / 2 + hu / 2, ru - m + dm])
     {
-        translate ([0, -hu / 2, h1 / 2 - dm])
+        translate ([ru, -hu / 2, 0.6 * h1 - dm])
             cube ([2.9 * ru, hu, 2 * ru], center = true);
         rotate ([90, 0, 0])
             cylinder (r = ru, h = hu);
