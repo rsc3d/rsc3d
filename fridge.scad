@@ -56,14 +56,23 @@ module side (a1, a2, a3, a4, h1, h2, l, m, r1, r2, r3, s, hk, hs)
 module cut (l, w, m, h1, hu)
 {
     dm = m * 2 / 3;
+    dr = m - dm;
     ru = h1 / 2;
-    translate ([l - dm, w / 2 + hu / 2, ru - m + dm])
+    dy = (w + hu) / 2;
+    ri = 0.55 * h1 / 2;
+    aa = 60;
+    translate ([l - dm, w / 2, ru])
     {
-        translate ([ru, -hu / 2, 0.6 * h1 - dm])
-            cube ([2.9 * ru, hu, 2 * ru], center = true);
-        rotate ([90, 0, 0])
-            cylinder (r = ru, h = hu);
+        cube ([2 * ru, hu, 2 * ru], center = true);
+        translate ([ru, -hu / 2, -ru])
+            rotate ([0, -aa, 0])
+                cube ([2 * ru, hu, 2 * ru]);
     }
+    translate ([l - dm + ru, dy - hu / 2, 0.6 * h1 + ru - m])
+        cube ([2.9 * ru, hu, 2 * ru], center = true);
+    translate ([l + ri / 3, dy, dm])
+        rotate ([90, 0, 0])
+            cylinder (r = ri, h = hu);
 }
 
 module screw (r, m)
