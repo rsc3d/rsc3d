@@ -67,7 +67,7 @@ module lawnmower_part
     difference () {
         union () {
             lmpart (h, h2, d_i, d_o, hl, hw, ns, w, nw, nl);
-            rotate ([0, 0, 20])
+            rotate ([0, 0, 17])
                 translate ([l1 + 5, -rh + hwh / 2 - 2, h / 2])
                     bows (rh, l1, l2, hwh, dw, ang);
             rotate ([0, 0, -45]) cube ([r_o, 3.25 * r_o, h]);
