@@ -68,7 +68,7 @@ module lawnmower_part
         union () {
             lmpart (h, h2, d_i, d_o, hl, hw, ns, w, nw, nl);
             rotate ([0, 0, 20])
-                translate ([l1 + 2, -rh + hwh / 2 - 2, h / 2])
+                translate ([l1 + 5, -rh + hwh / 2 - 2, h / 2])
                     bows (rh, l1, l2, hwh, dw, ang);
             rotate ([0, 0, -45]) cube ([r_o, 3.25 * r_o, h]);
         }
@@ -78,6 +78,6 @@ module lawnmower_part
 }
 
 rotate ([0, 0, -20]) lawnmower_part
-    (15.5, 7, 11.8, 16.7, 49.5, 14, 4, 2, 4.6, 4, 25, 50, 23.5, 75, 13, 20);
+    (15.5, 7, 11.8, 16.7, 49.5, 14, 4, 2, 4.6, 4, 22, 50, 23.5, 75, 13, 20);
 
 
