@@ -78,9 +78,12 @@ module holder (dia, screw, l, w, h)
     }
     // Support for screw hole
     translate ([ ri / 2, -w / 2 - r, 0])
-        cube ([1, w, h], center = true);
+        cube ([0.8, w, h], center = true);
     translate ([-ri / 2, -w / 2 - r, 0])
-        cube ([1, w, h], center = true);
+        cube ([0.8, w, h], center = true);
 }
 
-holder (24.5, 5, 34, 13, 12);
+translate ([-17 + 0.001, 0, 0])
+    holder (24.5, 5, 34, 13, 12);
+translate ([ 17 - 0.001, 0, 0])
+    holder (24.5, 5, 34, 13, 12);
