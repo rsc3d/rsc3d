@@ -77,13 +77,26 @@ module holder (dia, screw, l, w, h)
         }
     }
     // Support for screw hole
-    translate ([ ri / 2, -w / 2 - r, 0])
-        cube ([0.8, w, h], center = true);
-    translate ([-ri / 2, -w / 2 - r, 0])
-        cube ([0.8, w, h], center = true);
+    if (screw >= 4) {
+        translate ([ ri / 2, -w / 2 - r, 0])
+            cube ([0.8, w, h], center = true);
+        translate ([-ri / 2, -w / 2 - r, 0])
+            cube ([0.8, w, h], center = true);
+    }
 }
 
-translate ([-17 + 0.001, 0, 0])
-    holder (24.5, 5, 34, 13, 12);
-translate ([ 17 - 0.001, 0, 0])
-    holder (24.5, 5, 34, 13, 12);
+// dual holder
+// translate ([-17 + 0.001, 0, 0])
+//     holder (24.5, 5, 34, 13, 12);
+// translate ([ 17 - 0.001, 0, 0])
+//     holder (24.5, 5, 34, 13, 12);
+
+// Cable holder with 3mm screw
+// For 8mm cable
+// older (8, 3.2, 11.5, 9, 8);
+// For 9mm cable
+// holder (9, 3.2, 12.5, 9, 8);
+
+// Single holder
+holder (24.5, 5, 34, 13, 12);
+
