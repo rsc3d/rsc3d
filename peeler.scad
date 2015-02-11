@@ -56,7 +56,7 @@ module peelerside
                 cylinder (r = db / 2, h = db + fw / 2);
             // Support:
             translate ([bw / 2 - db + 0.5, 1.917 * db, 0])
-                cylinder (r = 0.5, h = h / 2);
+                cylinder (r = 0.8, h = h / 2);
         }
         translate ([bw / 2, dh, dh]) rotate ([0, 90, 0])
             cylinder (r = dh / 2, h = 3 * fw, center = true);
