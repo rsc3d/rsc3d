@@ -65,19 +65,21 @@ module sharpener_holes (w, holes)
         screwhole (w, holes [0], holes [1], holes [2]);
 }
 
-module top (holes, odia, w, hd = 12, edges = 8, ang = 25, d1 = 9, d2 = 13, sd)
+module top (holes, odia, w, d, hd, edges = 8, ang = 25, d1 = 9, d2 = 13, sd)
 {
-    dia = (odia - 2 * (w)) * cos (180 / edges);
+    dia = (odia - 2 * (w + d * 2 / 3)) * cos (180 / edges);
     difference () {
         translate ([0, 0, w / 2]) intersection_for (n = [1 : edges / 2]) {
                 rotate ([0, 0, n * 360 / edges])
                     cube ([odia, odia, hd + w], center = true);
             }
         translate ([0, 0, -hd / 2 + w + e]) {
-            linear_extrude (height = hd, twist = -ang, slices = 40) {
-                intersection_for (n = [1 : edges / 2]) {
-                    rotate ([0, 0, n * 360 / edges])
-                        square (dia, center = true);
+            rotate ([0, 0, -ang]) {
+                linear_extrude (height = hd, twist = -ang, slices = 40) {
+                    intersection_for (n = [1 : edges / 2]) {
+                        rotate ([0, 0, n * 360 / edges])
+                            square (dia, center = true);
+                    }
                 }
             }
         }
@@ -93,9 +95,9 @@ d     =  1;
 hd    = 12;
 edges =  8;
 ang   = 25;
-holes = [2.5, 3.5, 2.5, 13, 9, 24.5, 3, 3, 12, 6, 17, 2, 3.5, 5, 2];
+holes = [2.5, 3.5, 2.5, 13, 9, 24.5, 3, 3, 12, 5, 17, 2, 2.0, 5, 2];
 
-translate ([0, 0, h/2])
-    sharpener (odia, h, w, d, hd, edges, ang);
+//translate ([0, 0, h/2])
+//    sharpener (odia, h, w, d, hd, edges, ang);
 translate ([1.1 * odia, 0, hd / 2])
-    top (holes, odia, w, hd, edges, ang, d1, d2, sd);
+    top (holes, odia, w, d, hd, edges, ang, d1, d2, sd);
