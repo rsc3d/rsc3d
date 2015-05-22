@@ -38,9 +38,13 @@ module wpart (l, corr, ld, w, th, gp, h1, h2, gw)
         translate ([0, w / 2 + th / 2, 0])
             cube ([2 * l, w, 2 * gp], center = true);
     }
-    translate ([ l / 2 + circ_r / 2, 0, 0])
+    translate ([ l / 2 + circ_r / 2, circ_r / 2, 0])
+        cube ([circ_r, circ_r, gp], center= true);
+    translate ([ l / 2 + circ_r / 2, circ_r, 0])
         cylinder (r = circ_r / 2, h = gp, center = true);
-    translate ([-l / 2 - circ_r / 2, 0, 0])
+    translate ([-l / 2 - circ_r / 2, circ_r / 2, 0])
+        cube ([circ_r, circ_r, gp], center= true);
+    translate ([-l / 2 - circ_r / 2, circ_r, 0])
         cylinder (r = circ_r / 2, h = gp, center = true);
 }
 
