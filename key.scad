@@ -1,7 +1,7 @@
 
 // Old-fashioned key
 
-module key (th = 15, td = 8.8, tw = 4.3, tm = 5, dia = 6.5, l = 51)
+module key (th = 15, td = 8.8, tw = 3.8, tm = 5, dia = 6.0, l = 51)
 {
     // th: teeth-height
     // td: teeth-depth
@@ -10,7 +10,7 @@ module key (th = 15, td = 8.8, tw = 4.3, tm = 5, dia = 6.5, l = 51)
     grip_r = th * 5 / 6;
     rotate ([-90, 0, 0])
         cylinder (h = l, r = dia / 2, $fa = 3, $fs = 0.5);
-    tcr = 3;
+    tcr = 2.5;
     // teeth
     difference () {
         translate ([0, tm, -tw / 2])
@@ -25,7 +25,7 @@ module key (th = 15, td = 8.8, tw = 4.3, tm = 5, dia = 6.5, l = 51)
             cube ([2.7, 2.7, 4 * tw]);
         translate ([0, tm - 1 / 2, tw / 2 - 0.5])
             cube ([td + 1, td + 1, tw]);
-        translate ([th - 6.1, 0, tcr - tw / 2 + 2.4])
+        translate ([th - 6.1, 0, tcr - tw / 2 + 2.0])
             rotate ([-90, 0, 0])
                 cylinder (r = tcr, h = 2 * td, $fa = 3, $fs = 0.5);
     }
