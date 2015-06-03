@@ -1,8 +1,10 @@
-module two_tangent_cube (h, x1, y1, r1, x2, y2, r2)
+module two_tangent_cube (h1, h, x1, y1, r1, x2, y2, r2)
 {
     // http://en.wikipedia.org/wiki/Tangent_lines_to_circles
     // echo (x1, y1, r1, x2, y2, r2);
     d = sqrt (pow (x1 - x2, 2) + pow (y1 - y2, 2));
+    phi = atan ((h - h1) / d);
+    cl  = d / cos (phi);
     X = (x2 - x1) / d;
     Y = (y2 - y1) / d;
     R = (r2 - r1) / d;
@@ -84,10 +86,15 @@ module two_tangent_cube (h, x1, y1, r1, x2, y2, r2)
         translate ([xt1_2, yt1_2, 0])
             rotate ([0, 0, phi2 + 270])
                 cube ([kl, kl, h]);
+        translate ([0, 0, h1])
+            rotate ([0, -phi, 0])
+                translate ([0, -cl / 2, -cl])
+                    cube (cl);
+
     }
 }
 
-module handle (ri1, ro1, h1, ri2, ro2, h2, len)
+module handle (ri1, ro1, h1, ri2, ro2, h2, h3, len, d, sc, rs1, rs2)
 {
     l = len - ro1 - ro2;
     difference () {
@@ -95,12 +102,22 @@ module handle (ri1, ro1, h1, ri2, ro2, h2, len)
             cylinder (r = ro1, h = h1);
             translate ([l, 0, 0])
                 cylinder (r = ro2, h = h2);
-            two_tangent_cube (h1, 0, 0, ro1, l, 0, ro2);
+            two_tangent_cube (h1, h3, 0, 0, ro1, l, 0, ro2);
         }
         translate ([0, 0, -h1 / 2]) cylinder (r = ri1, h = 2 * h1);
-        translate ([l, 0, -h2 / 2]) cylinder (r = ri2, h = 2 * h2);
+        translate ([l, 0,   h2 -d]) cylinder (r = ri2, h = h2);
+        translate ([l, 0, sc])
+            rotate ([-90, 0, 0])
+                cylinder (r = rs1, h = ro2 * 2);
+        translate ([l, ro2 - (rs2 - rs1), sc])
+            rotate ([-90, 0, 0])
+                cylinder (r1 = rs1, r2 = rs2, h = rs2 - rs1);
     }
 }
 
 rotate (45)
-handle (15 / 2, 27 / 2, 16, 21 / 2, 40 / 2, 39, 192 + 30);
+handle ( 15.5/2, 27/2, 16
+       , 21/2,   40/2, 38
+       , 25, 192 + 30, 34.5, 13, 4/2, 11/2
+       , $fa=3, $fs=0.3
+       );
