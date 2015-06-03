@@ -1,37 +1,9 @@
+use <lib/slice.scad>
+use <lib/arc.scad>
+
 // Peeler (e.g. for potatoes)
 
 e = 0.001;
-
-// starts at y axis + a1 in clock direction, continues for a2.
-module arc (a1, a2, r, fw, h)
-{
-    rotate ([0, 0, a1])
-    {
-        difference () {
-            slice (r, h, a2);
-            rotate ([0, 0, -1])
-                translate ([0, 0, -h])
-                    slice (r - fw, 3 * h, a2 + 2);
-        }
-    }
-}
-
-// Starts at Y-axis in negative clock direction
-module slice (r = 10, h = 10, ang = 30) {
-    aa = (ang % 360 > 0) ? ang % 360 : ang % 360 + 360;
-    rotate (-90) {
-        difference() {
-            cylinder (r = r, h = h);
-            if (aa > 180)
-                intersection_for (a = [0, 180 - aa])
-                    rotate(-a) translate([-r, 0, -h])
-                        cube ([r * 2, r * 2, 3 * h]);
-            else union() for (a = [0, 180 - aa])
-                rotate(-a) translate([-r, 0, -h])
-                    cube ([r * 2, r * 2, 3 * h]);
-        }
-    }
-}
 
 module peelerside
     ( fw, bw, bd, h, r1, c1x, c1y, r2, c2x, c2y, rg, cgx, cgy
