@@ -1,0 +1,89 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 12.04.0 ] */
+
+/* [wxMaxima: input   start ] */
+g1: a=r * sin (phi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+g2: r-b = r * cos (phi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+g2c:solve (g2, 'cos(phi));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+cs:r**2 + (r-b)**2 - 2 * r * (r-b) * cos(phi) = a**2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+css:subst([g2c], [cs]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+rs:solve (css, r);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+c1:x**2 + (y + (r-z-b))**2 = r**2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+c2:(x-m2)**2 + (y-m2)**2 = r2**2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+alph:2*r2**2 - 2*r2**2*cos(alpha) = 2*c**2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+depends (y,x);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+d1:diff(c1,x);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+sd1:solve (d1, 'diff(y,x));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+c1s:subst ([x=a,y=z],sd1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+d2:diff(c2,x);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+sd2:solve(d2, 'diff(y,x));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+c2s:subst([x=a, y=z],sd2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+m2s:solve (rhs (c1s [1]) = rhs (c2s [1]), m2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+r2s:r2 = sqrt ((a-m2)**2 + (z-m2)**2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve (alph, 'cos(alpha));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve (subst ([x=a, rs [1]], c1),y);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve (subst([x=a,rs[1],r2s,m2s[1]],c2),y);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
