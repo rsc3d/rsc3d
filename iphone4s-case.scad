@@ -5,7 +5,7 @@ bevel     =   0.6;
 
 glass_d   =   9.34;
 
-steel_h   = 115.15;
+steel_h   = 115.15 + 1;
 steel_w   =  58.55;
 steel_d   = glass_d - 2 * glass_t;
 
@@ -60,8 +60,7 @@ sl_h      = 5;
 
 // speaker(?)
 spkr_w = 7;
-spkr_l = 51.26;
-spkr_r = 15.27;
+spkr_o = 7.29;
 
 module rrect (x, y, h, r)
 {
@@ -99,61 +98,71 @@ module case (h, w, d, t1, t2)
         translate ([-h / 2 - 2 * t1, w / 2 - tm_h, d / 2 + t2])
             rotate ([0, 90, 0])
                 cylinder (r = tm_r, h = 3 * t1);
+        // Mute slot hole, Up/Down buttons
+        hull () {
+            translate ([-h/2 + d_c, -w/2 + t1, d/2 + t2])
+                rotate ([90, 0, 0])
+                    cylinder (r = ud_r, h = 3 * t1);
+            translate ([-h/2 + u_c + (u_c - d_c), -w/2 + t1, d/2 + t2])
+                rotate ([90, 0, 0])
+                    cylinder (r = ud_r, h = 3 * t1);
+        }
+        // Sleep button
+        hull () {
+            translate ([-h / 2 - 2 * t1, w/2 - sl_hd + .25 * sl_w, d/2 + t2])
+                rotate ([90, 0, 90])
+                    cylinder (h = 3 * t1, r = sl_h / 2 * 1.3);
+            translate ([-h / 2 - 2 * t1, w/2 - sl_hd + .75 * sl_w, d/2 + t2])
+                rotate ([90, 0, 90])
+                    cylinder (h = 3 * t1, r = sl_h / 2 * 1.3);
+        }
         // connector
-        translate ([h / 2 - t1, 0, d / 2 + t2]) {
-            rotate ([0, 90, 0]) hull () {
-                translate ([0, -cn_w / 2 + cn_h / 2, 0])
-                    cylinder (r = cn_h / 2, h = 3 * t1);
-                translate ([0,  cn_w / 2 - cn_h / 2, 0])
-                    cylinder (r = cn_h / 2, h = 3 * t1);
+        if (0) {
+            translate ([h / 2 - t1, 0, d / 2 + t2]) {
+                rotate ([0, 90, 0]) hull () {
+                    translate ([0, -cn_w / 2 + cn_h / 2, 0])
+                        cylinder (r = cn_h / 2, h = 3 * t1);
+                    translate ([0,  cn_w / 2 - cn_h / 2, 0])
+                        cylinder (r = cn_h / 2, h = 3 * t1);
+                }
             }
         }
-        // Mute slot hole
-        translate ([-h / 2 + mute_h / 2 + mute_t, -w / 2 + 0.1*t1, d / 2 + t2])
-            rotate ([90, 0, 0])
-                hull () {
-                    translate ([0,  mute_w / 2, 0])
-                        cylinder (r = mute_h / 2, h = 1.2 * t1);
-                    translate ([0, -mute_w / 2, 0])
-                        cylinder (r = mute_h / 2, h = 1.2 * t1);
-                }
-        // Up/Down buttons
-        translate ([-h / 2 + u_c, -w / 2 + t1, d / 2 + t2])
-            rotate ([90, 0, 0])
-                cylinder (r = ud_r, h = 3 * t1);
-        translate ([-h / 2 + d_c, -w / 2 + t1, d / 2 + t2])
-            rotate ([90, 0, 0])
-                cylinder (r = ud_r, h = 3 * t1);
-        // Sleep button
-        translate ([-h / 2 - 2 * t1, w / 2 - sl_hd + sl_w / 2, d / 2 + t2])
-            rotate ([90, 0, 90])
-                rrect (sl_w, sl_h, 3 * t1, element_r);
         // speakers (?) bottom
-        translate ([h / 2 - t1, spkr_l - w / 2 - spkr_w / 2, d / 2 + t2])
-            rotate ([0, 90, 0])
-                cylinder (r = spkr_w / 2, h = 3 * t1);
-        translate ([h / 2 - t1, spkr_r - w / 2 - spkr_w / 2, d / 2 + t2])
-            rotate ([0, 90, 0])
-                cylinder (r = spkr_w / 2, h = 3 * t1);
+        hull () {
+            translate ([h / 2 - t1,  w / 2 - spkr_w / 2 - spkr_o, d / 2 + t2])
+                rotate ([0, 90, 0])
+                    cylinder (r = spkr_w / 2, h = 3 * t1);
+            translate ([h / 2 - t1, -w / 2 + spkr_w / 2 + spkr_o, d / 2 + t2])
+                rotate ([0, 90, 0])
+                    cylinder (r = spkr_w / 2, h = 3 * t1);
+        }
     }
     // support material for connector
-    for (t = [0 : 3.4 : (cn_w - cn_h) / 2 + 2]) {
+    for (t = [0 : 2.6 : w / 2 - spkr_w / 2 - spkr_o]) {
         translate ([h / 2 + t1 / 2,  t, t2])
             cylinder (r = t1 / 2, h = cn_h * 1.5);
         translate ([h / 2 + t1 / 2, -t, t2])
             cylinder (r = t1 / 2, h = cn_h * 1.5);
     }
     // support material for Sleep button
-    for (t = [0 : 3.4 : sl_w / 2]) {
+    for (t = [0 : 2.2 : sl_w / 2]) {
         translate ([-h / 2 - t1 / 2, w / 2 - sl_hd + sl_w / 2 + t, t2])
-            cylinder (r = t1 / 2, h = sl_h * 1.5);
+            cylinder (r = t1 / 2, h = sl_h * 1.8);
         translate ([-h / 2 - t1 / 2, w / 2 - sl_hd + sl_w / 2 - t, t2])
-            cylinder (r = t1 / 2, h = sl_h * 1.5);
+            cylinder (r = t1 / 2, h = sl_h * 1.8);
     }
     // support material for top mic
     translate ([-h / 2 - t1, w / 2 - jack_h + jack_r - 0.1, d / 3 + t2])
         cube ([t1, 0.61, 3 * tm_r]);
+
+    // support material up/down buttons, Mute slot hole
+    for (t = [0 : 2.5 : (d_c - u_c)]) {
+        translate ([-h/2 + u_c - t, -w/2 - t1 / 2, t2])
+            cylinder (r = t1 / 2, h = ud_r * 2.6);
+        translate ([-h/2 + u_c + t, -w/2 - t1 / 2, t2])
+            cylinder (r = t1 / 2, h = ud_r * 2.6);
+    }
 }
 
-case (steel_h, steel_w, glass_d, 2, 1, $fa = 3, $fs = 0.4);
+case (steel_h, steel_w, glass_d, 1.3, 1, $fa = 3, $fs = 0.4);
 //translate ([0, 0, 1]) iphone4(true,true,true,true,true);
