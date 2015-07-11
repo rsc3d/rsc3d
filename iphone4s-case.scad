@@ -72,97 +72,97 @@ module rrect (x, y, h, r)
     }
 }
 
-module case (h, w, d, t1, t2)
+module case (h, w, d, tw, tb, tt)
 {
     difference () {
-        rrect (h + 2 * t1, w + 2 * t1, d + 2 * t2, corner_r + t1);
-        translate ([0, 0, t2])
-            rrect (h, w, d + 2 * t1, corner_r);
-        translate ([0, 0, -t2])
+        rrect (h + 2 * tw, w + 2 * tw, d + tb + tt, corner_r + tw);
+        translate ([0, 0, tb])
+            rrect (h, w, d + 2 * tw, corner_r);
+        translate ([0, 0, -tb])
             cylinder (r = 20, h = 5);
         // camera
-        translate ([-(h / 2 - cam_m), w / 2 - cam_m, -t2])
-            cylinder (h = 3 * t2, r = cam_r, $fa = 3, $fs = 0.5);
+        translate ([-(h / 2 - cam_m), w / 2 - cam_m, -tb])
+            cylinder (h = 3 * tb, r = cam_r, $fa = 3, $fs = 0.5);
         // flash
-        translate ([-(h / 2 - fl_v_m), w / 2 - fl_h_m, -t2])
-            cylinder (h = 3 * t2, r = fl_r, $fa = 3, $fs = 0.5);
+        translate ([-(h / 2 - fl_v_m), w / 2 - fl_h_m, -tb])
+            cylinder (h = 3 * tb, r = fl_r, $fa = 3, $fs = 0.5);
         // SIM slot (not rendered, good when sim is hidden)
-        // translate ([- (h / 2 - sim_v - sim_w / 2), w / 2 - t1, glass_d / 2])
+        // translate ([- (h / 2 - sim_v - sim_w / 2), w / 2 - tw, glass_d / 2])
         //     rotate ([-90, 0, 0])
-        //         rrect (sim_w, sim_h, 3 * t1, element_r);
+        //         rrect (sim_w, sim_h, 3 * tw, element_r);
         // jack
-        translate ([-(h / 2 + 2 * t1), w / 2 - jack_h, d / 2 + t2])
+        translate ([-(h / 2 + 2 * tw), w / 2 - jack_h, d / 2 + tb])
             rotate ([0, 90, 0])
-                cylinder (h = 3 * t1, r = jack_r);
+                cylinder (h = 3 * tw, r = jack_r);
         // top mic
-        translate ([-h / 2 - 2 * t1, w / 2 - tm_h, d / 2 + t2])
+        translate ([-h / 2 - 2 * tw, w / 2 - tm_h, d / 2 + tb])
             rotate ([0, 90, 0])
-                cylinder (r = tm_r, h = 3 * t1);
+                cylinder (r = tm_r, h = 3 * tw);
         // Mute slot hole, Up/Down buttons
         hull () {
-            translate ([-h/2 + d_c, -w/2 + t1, d/2 + t2])
+            translate ([-h/2 + d_c, -w/2 + tw, d/2 + tb])
                 rotate ([90, 0, 0])
-                    cylinder (r = ud_r, h = 3 * t1);
-            translate ([-h/2 + u_c + (u_c - d_c), -w/2 + t1, d/2 + t2])
+                    cylinder (r = ud_r, h = 3 * tw);
+            translate ([-h/2 + u_c + (u_c - d_c), -w/2 + tw, d/2 + tb])
                 rotate ([90, 0, 0])
-                    cylinder (r = ud_r, h = 3 * t1);
+                    cylinder (r = ud_r, h = 3 * tw);
         }
         // Sleep button
         hull () {
-            translate ([-h / 2 - 2 * t1, w/2 - sl_hd + .25 * sl_w, d/2 + t2])
+            translate ([-h / 2 - 2 * tw, w/2 - sl_hd + .25 * sl_w, d/2 + tb])
                 rotate ([90, 0, 90])
-                    cylinder (h = 3 * t1, r = sl_h / 2 * 1.3);
-            translate ([-h / 2 - 2 * t1, w/2 - sl_hd + .75 * sl_w, d/2 + t2])
+                    cylinder (h = 3 * tw, r = sl_h / 2 * 1.3);
+            translate ([-h / 2 - 2 * tw, w/2 - sl_hd + .75 * sl_w, d/2 + tb])
                 rotate ([90, 0, 90])
-                    cylinder (h = 3 * t1, r = sl_h / 2 * 1.3);
+                    cylinder (h = 3 * tw, r = sl_h / 2 * 1.3);
         }
         // connector
         if (0) {
-            translate ([h / 2 - t1, 0, d / 2 + t2]) {
+            translate ([h / 2 - tw, 0, d / 2 + tb]) {
                 rotate ([0, 90, 0]) hull () {
                     translate ([0, -cn_w / 2 + cn_h / 2, 0])
-                        cylinder (r = cn_h / 2, h = 3 * t1);
+                        cylinder (r = cn_h / 2, h = 3 * tw);
                     translate ([0,  cn_w / 2 - cn_h / 2, 0])
-                        cylinder (r = cn_h / 2, h = 3 * t1);
+                        cylinder (r = cn_h / 2, h = 3 * tw);
                 }
             }
         }
         // speakers (?) bottom
         hull () {
-            translate ([h / 2 - t1,  w / 2 - spkr_w / 2 - spkr_o, d / 2 + t2])
+            translate ([h / 2 - tw,  w / 2 - spkr_w / 2 - spkr_o, d / 2 + tb])
                 rotate ([0, 90, 0])
-                    cylinder (r = spkr_w / 2, h = 3 * t1);
-            translate ([h / 2 - t1, -w / 2 + spkr_w / 2 + spkr_o, d / 2 + t2])
+                    cylinder (r = spkr_w / 2, h = 3 * tw);
+            translate ([h / 2 - tw, -w / 2 + spkr_w / 2 + spkr_o, d / 2 + tb])
                 rotate ([0, 90, 0])
-                    cylinder (r = spkr_w / 2, h = 3 * t1);
+                    cylinder (r = spkr_w / 2, h = 3 * tw);
         }
     }
     // support material for connector
     for (t = [0 : 2.6 : w / 2 - spkr_w / 2 - spkr_o]) {
-        translate ([h / 2 + t1 / 2,  t, t2])
-            cylinder (r = t1 / 2, h = cn_h * 1.5);
-        translate ([h / 2 + t1 / 2, -t, t2])
-            cylinder (r = t1 / 2, h = cn_h * 1.5);
+        translate ([h / 2 + tw / 2,  t, tb])
+            cylinder (r = tw / 2, h = cn_h * 1.5);
+        translate ([h / 2 + tw / 2, -t, tb])
+            cylinder (r = tw / 2, h = cn_h * 1.5);
     }
     // support material for Sleep button
     for (t = [0 : 2.2 : sl_w / 2]) {
-        translate ([-h / 2 - t1 / 2, w / 2 - sl_hd + sl_w / 2 + t, t2])
-            cylinder (r = t1 / 2, h = sl_h * 1.8);
-        translate ([-h / 2 - t1 / 2, w / 2 - sl_hd + sl_w / 2 - t, t2])
-            cylinder (r = t1 / 2, h = sl_h * 1.8);
+        translate ([-h / 2 - tw / 2, w / 2 - sl_hd + sl_w / 2 + t, tb])
+            cylinder (r = tw / 2, h = sl_h * 1.8);
+        translate ([-h / 2 - tw / 2, w / 2 - sl_hd + sl_w / 2 - t, tb])
+            cylinder (r = tw / 2, h = sl_h * 1.8);
     }
     // support material for top mic
-    translate ([-h / 2 - t1, w / 2 - jack_h + jack_r - 0.1, d / 3 + t2])
-        cube ([t1, 0.61, 3 * tm_r]);
+    translate ([-h / 2 - tw, w / 2 - jack_h + jack_r - 0.1, d / 3 + tb])
+        cube ([tw, 0.61, 3 * tm_r]);
 
     // support material up/down buttons, Mute slot hole
     for (t = [0 : 2.5 : (d_c - u_c)]) {
-        translate ([-h/2 + u_c - t, -w/2 - t1 / 2, t2])
-            cylinder (r = t1 / 2, h = ud_r * 2.6);
-        translate ([-h/2 + u_c + t, -w/2 - t1 / 2, t2])
-            cylinder (r = t1 / 2, h = ud_r * 2.6);
+        translate ([-h/2 + u_c - t, -w/2 - tw / 2, tb])
+            cylinder (r = tw / 2, h = ud_r * 2.6);
+        translate ([-h/2 + u_c + t, -w/2 - tw / 2, tb])
+            cylinder (r = tw / 2, h = ud_r * 2.6);
     }
 }
 
-case (steel_h, steel_w, glass_d, 1.3, 1, $fa = 3, $fs = 0.4);
+case (steel_h, steel_w, glass_d, 1.3, 1.2, 2, $fa = 3, $fs = 0.4);
 //translate ([0, 0, 1]) iphone4(true,true,true,true,true);
