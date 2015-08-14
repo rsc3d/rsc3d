@@ -84,7 +84,7 @@ module screw (r, m)
         cylinder (r = m3h, h = m3 [screw_head_height]);
     translate ([0, 0,  (r + 2 * m - m3 [nut_height] + 0.01)])
         rotate ([0, 0, 90])
-            nut_hole (m3, m3 [nut_height]);
+            nut_hole (m3, 2 * m3 [nut_height]);
 }
 
 module fridge
