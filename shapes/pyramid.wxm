@@ -1,0 +1,285 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 13.04.2 ] */
+
+/* [wxMaxima: input   start ] */
+Hs: (a/2)**2 + h_s**2 = k**2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Hs_s: solve (Hs, h_s);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Hp:(a/2)**2 + h_p**2 = h_s**2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+H0:subst (rhs(Hp) = lhs(Hp), Hs);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+H0s:solve (H0, k);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Hp1:solve(Hp, h_p);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Hp_s:subst (Hs_s, Hp1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst (k=a, Hp_s);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst (k=a, Hs_s);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+winkel:h_s * sin (phi) = h_p;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+xx:subst (Hs_s, subst (Hp_s, winkel));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+xxphi:solve (subst (k=a, xx), phi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+float(180*rhs(xxphi[1])/%pi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst (Hp_s, subst (h_s=a, winkel));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+kk:subst (h_s=a,solve (Hs,k));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve (subst (kk[2],xx),phi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst (a=1, subst (k=a, Hp_s));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst (a=1, subst (h_s = a, Hp1));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+h_a:tan(phi)=a/(a/2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+h_aw:solve(h_a,phi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+float(atan(2)*180/%pi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+diag:h_p**2 + (a*sqrt(2)/2)**2 = (a*sqrt(2))**2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+diags:solve(diag,h_p);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+diagw:tan(phi)=h_p/(a/2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+diagws:solve(subst(diags[2],diagw),phi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+float(rhs(diagws[1])*180/%pi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+V0:V=a**2*h_p/3;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Vs:subst(h_p=sqrt(h_s**2-(a/2)**2), V0);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Vh:solve (V0, h_p);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+AA:A=a**2+4*a*h_s/2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst(h_s=sqrt(h_p**2+(a/2)**2),AA);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+As:ratsimp(subst (H0s[2],subst (Hs_s[2], AA)));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ctx:assume(a>0);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ctx:assume(A>a*a);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+facts();
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Ass:solve([As],h_p);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Vss:subst(Ass[2],V0);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Vd:diff(Vss,a);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Vds:solve(Vd,A);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst(Vds[1],Vd);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve(rhs(Vds[1]) = rhs(AA),h_s);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+s5:subst(k = a * sqrt(5)/2, Hp_s [2]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+s5s:subst(s5,diagw);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve(s5s,phi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+float(atan(sqrt(3)) * 180 / %pi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst (k=sqrt(5)*a/2, Hs_s [2]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+diagk:solve (subst (Hs_s [2], subst (diags [2], Hp)),k);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve (subst (h_p=a*sqrt(2), Hp), h_s);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+wl:acos (a / 2 / (a * 3 / 2));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+float (wl * 180 / %pi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst (h_s = a*3/2, Hs);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ratsimp(V/A);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+hero1:h**2 = h_s * a / 2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+hero2:h**2 = h_s**2 - (a/2)**2;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+hero3:solve (hero1, h_s);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+hero4:subst (hero3 [1], hero2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+hero5:solve (hero4, h);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+hero6:solve (subst (hero5 [2], hero2),h_s);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+herox:float (rhs(hero5[2]) / a);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+cheops:float (7/11);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+1/cheops;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+1/herox;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+float (%pi / 2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+sqrt(8);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+hero_side:k=sqrt(h_s**2 + (a/2)**2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ratsimp(subst (hero6[2],hero_side));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+float(atan(2)*180/%pi);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+hpa:h_s=sqrt(a**2+(a/2)**2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+hpk:sqrt(h_s**2+(a/2)**2);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+subst(hpa, hpk);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
