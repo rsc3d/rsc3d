@@ -91,9 +91,9 @@ module differ (r1, r3, l2, l3, a1, a2, distance)
 module handle
     ( r1 = 5, r2 = 7.5 / 2, r3 = 15.5 / 2
     , l1 = 44, l2 = 23, l3 = 30
-    , w = 2.5, w2 = 6
+    , w = 2.5, w2 = 4.21
     , d1 = 9, d2 = 9, d3 = 3.5
-    , hole = [6, 4.2, 2.7]
+    , hole = [6, 4.2, 3.2]
     )
 {
     a1 = 15;
@@ -103,9 +103,16 @@ module handle
         main3 (r1, r2, r3, l1, l2, l3, a1, a2, w, w2, d1, d2, hole);
         differ (r1, r3, l2, l3, a1, a2, dis);
     }
+    // Support material
+    translate ([0, d1, l2 / 2 + 2 * r3 / cos (a1) - 2 * r1 * tan (a1)])
+        rotate ([-a2, 0, 0])
+            translate ([0, d2 + w2 - 1, d2])
+                rotate ([0, 90, 0])
+                    cylinder (r = 1.2, h = 2 * r3 - 2, center = true);
 }
 
-translate ([20, 0, 0])
+translate ([6, 30, 0])
     grip (18.5, 18.5 / 2, 12 / 2, 8, $fa = 3, $fs = .5);
-rotate ([90, 0, 0])
-    handle ($fa = 3, $fs = .5);
+translate ([0, 0, 15.5/2])
+    rotate ([0, 90, 0])
+        handle ($fa = 3, $fs = .5);
