@@ -55,6 +55,6 @@ pyramid (50, 7/11);          // Cheops
 //pyramid (50, 55/82);        // Chephren
 //pyramid (50, sqrt (2) / 2); // equilateral triangle
 //pyramid (50, sqrt (3) / 2); // equilateral seen from side
-//pyramid (50, 1.0);          // equilateral seen from side
+//pyramid (50, 1.0);          // a=h
 //pyramid (50, sqrt (3 / 2)); // equilateral seen from edge
 //pyramid (50, sqrt (2));     // max volume
