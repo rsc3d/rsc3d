@@ -97,7 +97,7 @@ edges =  8;
 ang   = 25;
 holes = [2.5, 3.5, 2.5, 13, 9, 24.5, 3, 3, 12, 5, 17, 2, 2.0, 5, 2];
 
-//translate ([0, 0, h/2])
-//    sharpener (odia, h, w, d, hd, edges, ang);
+translate ([0, 0, h/2])
+    sharpener (odia, h, w, d, hd, edges, ang);
 translate ([1.1 * odia, 0, hd / 2])
     top (holes, odia, w, d, hd, edges, ang, d1, d2, sd);
