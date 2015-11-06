@@ -93,8 +93,11 @@ module case (h, w, d, tw, tb, tt, ld)
         //         rrect (sim_w, sim_h, 3 * tw, element_r);
         // jack
         translate ([-(h / 2 + 2 * tw), w / 2 - jack_h, lift])
-            rotate ([0, 90, 0])
+            rotate ([0, 90, 0]) {
                 cylinder (h = 3 * tw, r = jack_r);
+                translate ([-jack_r, 0, tw])
+                    cube ([2 * jack_r, 2 * jack_r, 3 * tw], center = true);
+            }
         // top mic
         translate ([-h / 2 - 2 * tw, w / 2 - tm_h, lift])
             rotate ([0, 90, 0])
@@ -137,13 +140,17 @@ module case (h, w, d, tw, tb, tt, ld)
                 rotate ([0, 90, 0])
                     cylinder (r = spkr_w / 2, h = 3 * tw);
         }
+        translate ([h/2, 0, lift + spkr_w / 2])
+            cube ([3 * tw, w - 2 * spkr_o, spkr_w], center = true);
     }
     // support material for connector
-    for (t = [0 : 2.6 : w / 2 - spkr_w / 2 - spkr_o]) {
-        translate ([h / 2 + tw / 2,  t, tb])
-            cylinder (r = tw / 2, h = cn_h * 1.5);
-        translate ([h / 2 + tw / 2, -t, tb])
-            cylinder (r = tw / 2, h = cn_h * 1.5);
+    if (0) {
+        for (t = [0 : 2.6 : w / 2 - spkr_w / 2 - spkr_o]) {
+            translate ([h / 2 + tw / 2,  t, tb])
+                cylinder (r = tw / 2, h = cn_h * 1.5);
+            translate ([h / 2 + tw / 2, -t, tb])
+                cylinder (r = tw / 2, h = cn_h * 1.5);
+        }
     }
     // support material for Sleep button
     for (t = [0 : 2.2 : sl_w / 2]) {
@@ -153,8 +160,10 @@ module case (h, w, d, tw, tb, tt, ld)
             cylinder (r = tw / 2, h = sl_h * 1.8);
     }
     // support material for top mic
-    translate ([-h/2 - tw, w/2 - jack_h + jack_r - 0.1, d / 3 + tb])
-        cube ([tw, 0.61, 3 * tm_r]);
+    if (0) {
+        translate ([-h/2 - tw, w/2 - jack_h + jack_r - 0.1, d / 3 + tb])
+            cube ([tw, 0.61, 3 * tm_r]);
+    }
 
     // support material up/down buttons, Mute slot hole
     for (t = [0 : 2.5 : (d_c - u_c)]) {
