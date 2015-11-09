@@ -136,14 +136,30 @@ module outlet_single
                 }
             }
             cylinder (r=dia/2, h=hc);
-            translate ([0, 0, -(hs-hc)/2])
-                cube ([ql, qw, hs-hc], center=true);
-            for (x=[-1,1]) {
-                translate ([(q2w/2-q2d/2)*x, 0, -(hs-hc)/2])
-                    cube ([q2w, q2l, hs-hc], center=true);
-                for (y=[-1,1]) {
-                    translate ([(q2w-q2d)*x/2, y*(q2w-q2l)/2, -(hs-hc+q3h)/2])
-                        cube ([q2w, q2w, hs-hc+q3h], center=true);
+            difference () {
+                union () {
+                    translate ([0, 0, -(hs-hc)/2])
+                        cube ([ql, qw, hs-hc], center=true);
+                    for (x=[-1,1]) {
+                        translate ([(q2w/2-q2d/2)*x, 0, -(hs-hc)/2])
+                            cube ([q2w, q2l, hs-hc], center=true);
+                        for (y=[-1,1]) {
+                            translate
+                              ([(q2w-q2d)*x/2, y*(q2w-q2l)/2, -(hs-hc+q3h)/2])
+                                cube ([q2w, q2w, hs-hc+q3h], center=true);
+                        }
+                    }
+                }
+                for (x=[-1,1]) {
+                    for (y=[-1,1]) {
+                        translate ([x*ql/2, 0, 0])
+                            rotate ([0, 0, 12*y])
+                                translate ([x*2*qw, 0, -(hs-hc+q3h)])
+                                    cube
+                                        ( [4*qw, 4*qw, 3*(hs-hc+q3h)]
+                                        , center = true
+                                        );
+                    }
                 }
             }
         }
