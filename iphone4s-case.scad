@@ -5,7 +5,7 @@ bevel     =   0.6;
 
 glass_d   =   9.34;
 
-steel_h   = 115.15 + 1;
+steel_h   = 115.15;
 steel_w   =  58.55;
 steel_d   = glass_d - 2 * glass_t;
 
@@ -72,14 +72,23 @@ module rrect (x, y, h, r)
     }
 }
 
-module case (h, w, d, tw, tb, tt, ld)
+// h: height
+// w: width
+// d: depth
+// tw: thickness of wall
+// tb: thickness of bottom
+// tt: height above glass
+// ld: space at bottom for phone (all knobs are shifted up by this)
+// dgrip: grip hole shift
+module case (h, w, d, tw, tb, tt, ld, dgrip = 30)
 {
     lift = d/2 + tb + ld;
     difference () {
         rrect (h + 2 * tw, w + 2 * tw, d + tb + tt, corner_r + tw);
         translate ([0, 0, tb])
-            rrect (h, w, d + 2 * tw, corner_r);
-        translate ([0, 0, -tb])
+            rrect (h, w, d + tb + tt, corner_r);
+        // grip hole at bottom
+        translate ([dgrip, 0, -tb])
             cylinder (r = 20, h = 5);
         // camera
         translate ([-(h / 2 - cam_m), w / 2 - cam_m, -tb])
@@ -140,8 +149,8 @@ module case (h, w, d, tw, tb, tt, ld)
                 rotate ([0, 90, 0])
                     cylinder (r = spkr_w / 2, h = 3 * tw);
         }
-        translate ([h/2, 0, lift + spkr_w / 2])
-            cube ([3 * tw, w - 2 * spkr_o, spkr_w], center = true);
+        translate ([h/2, 0, lift + (spkr_w + tt) / 2])
+            cube ([3 * tw, w - 2 * spkr_o, spkr_w + tt], center = true);
     }
     // support material for connector
     if (0) {
@@ -153,7 +162,7 @@ module case (h, w, d, tw, tb, tt, ld)
         }
     }
     // support material for Sleep button
-    for (t = [0 : 2.2 : sl_w / 2]) {
+    for (t = [0 : 2.6 : sl_w / 2 - 3]) {
         translate ([-h/2 - tw/2, w/2 - sl_hd + sl_w / 2 + t, tb])
             cylinder (r = tw / 2, h = sl_h * 1.8);
         translate ([-h/2 - tw/2, w/2 - sl_hd + sl_w / 2 - t, tb])
@@ -174,5 +183,5 @@ module case (h, w, d, tw, tb, tt, ld)
     }
 }
 
-case (steel_h, steel_w, glass_d, 1.3, 1.2, 2, .5, $fa = 3, $fs = 0.4);
+case (steel_h + 1, steel_w, glass_d, 1.8, 1.2, 3, .5, $fa = 3, $fs = 0.4);
 //translate ([0, 0, 1]) iphone4(true,true,true,true,true);
