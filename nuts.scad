@@ -1,5 +1,4 @@
 e = 0.1; // epsilon
-$fn = 100;
 
 // Screws / Nuts
 // described by a K-Element vector, offsets defined as follows
