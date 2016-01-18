@@ -1,7 +1,7 @@
 module grip (h, lower_r, upper_r, edges, holedia = 4.5)
 {
     rho = atan ((lower_r - upper_r) / h);
-    echo (rho);
+    //echo (rho);
     ch  = sqrt (pow (h, 2) + pow (lower_r - upper_r, 2)) * 1.5;
     cs  = lower_r * 1.5 * 2;
     difference () {
