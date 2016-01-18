@@ -19,7 +19,7 @@ module bung
     }
 }
 
-for (i = [-1, 0, 1]) {
+for (i = [-1, 0, 1, 2]) {
     translate ([i * 26, 0, 0])
         bung ($fa = 3, $fs = .5);
 }
