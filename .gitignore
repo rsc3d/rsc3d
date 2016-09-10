@@ -13,4 +13,6 @@
 *~
 .#*
 .*.swp
+.*.d
 .DS_store
+README.html
