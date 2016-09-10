@@ -1,4 +1,16 @@
-module grip (h, lower_r, upper_r, edges, holedia = 4.5)
+module grip (h, lower_r, upper_r, edges, holedia = 4.5, flat_top = false)
+{
+    // print upside-down if flat_top is selected.
+    if (flat_top) {
+        translate ([0, 0, h])
+            rotate ([180, 0, 0])
+                _grip (h, lower_r, upper_r, edges, holedia, flat_top);
+    } else {
+        _grip (h, lower_r, upper_r, edges, holedia, flat_top);
+    }
+}
+
+module _grip (h, lower_r, upper_r, edges, holedia = 4.5, flat_top = false)
 {
     rho = atan ((lower_r - upper_r) / h);
     //echo (rho);
@@ -15,6 +27,10 @@ module grip (h, lower_r, upper_r, edges, holedia = 4.5)
                 }
         translate ([0, 0, -ch / 2])
             cube (ch, center = true);
+        if (flat_top) {
+            translate ([0, 0, ch / 2 + h])
+                cube (ch, center = true);
+        }
         cylinder (r = holedia / 2, h = 11 * 2, center = true);
     }
 }
@@ -132,7 +148,7 @@ module handle
 }
 
 translate ([6, 30, 0])
-    grip (18.5, 18.5 / 2, 12 / 2, 8, $fa = 3, $fs = .5);
+    grip (18.5, 18.5 / 2, 12 / 2, 8, $fa = 3, $fs = .5, flat_top = true);
 translate ([0, 0, 15.5/2])
     rotate ([0, 90, 0])
         handle (hole = 0, $fa = 3, $fs = .5);
