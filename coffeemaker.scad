@@ -149,6 +149,6 @@ module handle
 
 translate ([6, 30, 0])
     grip (18.5, 18.5 / 2, 12 / 2, 8, $fa = 3, $fs = .5, flat_top = true);
-translate ([0, 0, 15.5/2])
+translate ([0, 0, 18.5/2])
     rotate ([0, 90, 0])
         handle (hole = 0, $fa = 3, $fs = .5);
