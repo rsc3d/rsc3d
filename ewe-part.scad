@@ -1,4 +1,4 @@
-module hole (r = 3.8 / 2, r2 = 7.2 / 2, hk = 2, h)
+module hole (r = 4 / 2, r2 = 7.4 / 2, hk = 2, h)
 {
     translate ([0, 0, -h])
         cylinder (r = r, h = 20 * h);
@@ -9,11 +9,11 @@ module hole (r = 3.8 / 2, r2 = 7.2 / 2, hk = 2, h)
 }
 
 module base
-    ( h = 6, w = 12, l = 75
+    ( h = 6, w = 12, l = 80
     , r = 5, s = 0, s2 = 14, s3 = 15.5, s4 = 18
-    , hy = 6.5, hr = 6.5, hl = 5.5
-    , h1p = 2
-    , h2x = 45, h2y = 2.5
+    , hy1 = 4.9, hy2 = 6.5, hr = 9.5, hl = 5.9
+    , h1x = 1.5
+    , h2x = 27, h2y = 2.5
     )
 {
     lxh = s4 - r;
@@ -37,14 +37,14 @@ module base
             translate ([0, w - s2, 0])
                 rotate ([0, 0, -a])
                     cube ([lwh, lwh, h]);
-            translate ([h1p, w, 0])
+            translate ([h1x, w, 0])
                 hook1 ();
-            translate ([l - h2x, h2y, 0])
+            translate ([h2x, h2y, 0])
                 hook2 ();
         }
-        translate ([l - r - hr, hy, 0])
+        translate ([l - r - hr, hy2, 0])
             hole (h = h);
-        translate ([hl - r, hy, 0])
+        translate ([hl - r, hy1, 0])
             hole (h = h);
     }
 }
