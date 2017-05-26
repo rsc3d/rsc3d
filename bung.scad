@@ -19,7 +19,9 @@ module bung
     }
 }
 
-for (i = [-1, 0, 1, 2]) {
-    translate ([i * 26, 0, 0])
-        bung ($fa = 3, $fs = .5);
-}
+//for (i = [-1, 0, 1, 2]) {
+//    translate ([i * 26, 0, 0])
+//        bung ($fa = 3, $fs = .5);
+//}
+
+bung (odia = 26, mdia = 19.0, h = 5.7, $fa = 3, $fs = .5);
