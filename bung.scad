@@ -24,4 +24,4 @@ module bung
 //        bung ($fa = 3, $fs = .5);
 //}
 
-bung (odia = 26, mdia = 19.0, h = 5.7, $fa = 3, $fs = .5);
+bung (odia = 26, mdia = 21.0, h = 5.7, $fa = 3, $fs = .5);
