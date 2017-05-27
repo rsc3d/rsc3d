@@ -33,7 +33,7 @@ module nut_hole (nut, h)
     }
 }
 
-module countersunk_screw_hole (nut, h)
+module countersunk_screw_hole (nut, h, h2 = 0)
 {
     cylinder
         ( r1 = (nut [screw_head_channel] * 1.1) / 2
@@ -41,6 +41,8 @@ module countersunk_screw_hole (nut, h)
         , h  = nut [screw_head_height]  * 1.05
         );
     cylinder (r = nut [screw_channel] / 2, h = h + nut [screw_head_height]);
+    translate ([0, 0, -h2])
+        cylinder (r = nut [screw_head_channel] * 1.1 / 2, h = h2);
 }
 
-//countersunk_screw_hole (m5, 10, $fa = 6, $fs = .5);
+//countersunk_screw_hole (m5, 10, 10, $fa = 6, $fs = .5);
