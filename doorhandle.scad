@@ -1,21 +1,10 @@
-include <nuts.scad>;
-
-module ear (l, h, d)
-{
-    v = l / 2;
-    kr = (v*v + h*h) / (2 * h);
-    difference () {
-        translate ([0, -(kr - h), 0])
-            cylinder (r = kr, h = d);
-        translate ([-l, -2 * l, -d])
-            cube ([2 * l, 2 * l, 3 * d]);
-    }
-}
+include <nuts.scad>
+use     <lib/segment.scad>
 
 module handle
     ( h = 66, h2 = 62.8
     , w = 18, w2 = 10.2
-    , d1 = 6.3, d2 = 4.3, dd3 = 2.5, d4 = 1
+    , d1 = 5.1, d2 = 4.3, dd3 = 2.5, d4 = 1
     , hd = 8.5, nut = m5
     , k = 3.2
     , e = 20
@@ -27,33 +16,20 @@ module handle
     b  = 2 * (dd3 - d4) / sqrt (2);
     difference () {
         cube ([h, w, d1]);
-        translate ([-h, k, d2])
-            cube ([3*h, w2, d1]);
-        translate ([-hh, k, -d1])
-            cube ([2 * hh, w2, 3*d1]);
-        translate ([-hh + h, k, -d1])
-            cube ([2 * hh, w2, 3*d1]);
         translate ([hh + hd, k + w2 / 2, d2 + 0.01])
             rotate ([180, 0, 0])
-                countersunk_screw_hole (m4, 3 * d1);
+                countersunk_screw_hole (m4, 3 * d1, 3 * d1);
         translate ([h - hh - hd, k + w2 / 2, d2 + 0.01])
             rotate ([180, 0, 0])
-                countersunk_screw_hole (m4, 3 * d1);
-        translate ([-d3 + hh, k, 0])
-            rotate ([0, 45, 0])
-                cube ([a, w2, a]);
-        translate ([h + d3 - hh, k, 0])
-            mirror ([1, 0, 0]) rotate ([0, 45, 0])
-                cube ([a, w2, a]);
-        translate ([-(dd3 - d4) + hh, k, d2])
-            rotate ([0, 45, 0])
-                cube ([b, w2, b]);
-        translate ([h + (dd3 - d4) - hh, k, d2])
-            mirror ([1, 0, 0]) rotate ([0, 45, 0])
-                cube ([b, w2, b]);
+                countersunk_screw_hole (m4, 3 * d1, 3 * d1);
     }
     translate ([h / 2, w - 0.01, 0])
-        ear (h, e, d1);
+        circle_segment (h, e, d1);
+}
+
+module hole_cover (nut, h)
+{
+    cylinder (r = nut [screw_head_channel] / 2, h = h);
 }
 
 module clip (w = 10, p)
@@ -82,6 +58,10 @@ module cover (h = 66, w = 10, d = 2, d2 = 1.5, h1 = 3, h2 = 1.5)
         mirror ([1, 0, 0]) clip (w, p);
 }
 
-translate ([0, -20, 0])
-    cover ($fa = 6, $fs = .5);
-handle ($fa = 6, $fs = .5);
+translate ([10, -20, 0])
+    hole_cover (m4, .8, $fa = 6, $fs = .5);
+translate ([40, -20, 0])
+    hole_cover (m4, .8, $fa = 6, $fs = .5);
+d1 = 5.1;
+translate ([0, 0, d1])
+    mirror ([0, 0, 1]) handle (d1 = d1, $fa = 6, $fs = .5);
