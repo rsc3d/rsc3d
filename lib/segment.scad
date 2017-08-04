@@ -43,7 +43,7 @@ module sphere_segment (chord, h, alpha)
         translate ([0, 0, y])
             sphere (r = r);
         for (xx = [-1:2:1]) {
-            rotate ([0, xx * 45, 0])
+            rotate ([0, xx * alpha / 2, 0])
                 translate ([xx*2*r, 0, -r + 2*(r+y)])
                     cube (4*r, center = true);
         }
