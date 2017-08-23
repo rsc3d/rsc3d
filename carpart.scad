@@ -6,7 +6,7 @@ module carpart
     , x=81, y=28, r1=6.5
     , iy=10.5, ix=47, ri=2
     , rhi=2.5, rhiu=9.5/2, rhid=3.5, rho=9.5/2, dh=60
-    , h3=5, l3=40, d3=1.8
+    , h3=5, l3=40, d3=2.8
     , h4=7
     )
 {
@@ -43,6 +43,12 @@ module carpart
             for (yy = [-1:2:1]) {
                 translate ([yy*dh/2, 0, -h2/2])
                     cylinder (r = rho, h = h2+1, center=true);
+            }
+            for (yy = [-1:2:1]) {
+                translate ([0, yy * (iy/2 + hu), h1 - hs])
+                    rotate ([0, 0, yy*90])
+                        rotate ([0, 45.1, 0])
+                            sphere_segment (2*(vb+vs), hb+hs, 90.2);
             }
         }
         for (xx = [-1:2:1]) {
