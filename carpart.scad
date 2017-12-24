@@ -32,13 +32,13 @@ module carpart
             for (yy = [-1:2:1]) {
                 translate ([0, yy*(y/2 - hs), 0])
                     rotate ([0, 0, 90 - yy*90])
-                        circle_segment (2*(vb+vs), hb+hs, h1);
+                        cylinder_segment (2*(vb+vs), hb+hs, h1);
             }
             for (yy = [-1:2:1]) {
                 translate ([0, yy*(iy/2 + hu/2), h1 - hs])
                     rotate ([90, 0, 0])
                         translate ([0, 0, -hu / 2])
-                            circle_segment (2*(vb+vs), hb+hs, hu);
+                            cylinder_segment (2*(vb+vs), hb+hs, hu);
             }
             for (yy = [-1:2:1]) {
                 translate ([yy*dh/2, 0, -h2/2])

@@ -24,7 +24,7 @@ module handle
                 countersunk_screw_hole (m4, 3 * d1, 3 * d1);
     }
     translate ([h / 2, w - 0.01, 0])
-        circle_segment (h, e, d1);
+        cylinder_segment (h, e, d1);
 }
 
 module hole_cover (nut, h)

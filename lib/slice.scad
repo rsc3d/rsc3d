@@ -1,4 +1,5 @@
-// Starts at Y-axis in negative clock direction
+// Slice of a cylinder (think pie slice)
+// Starts at Y-axis in negative clock direction around Z
 module slice (r = 10, h = 10, ang = 30) {
     aa = (ang % 360 > 0) ? ang % 360 : ang % 360 + 360;
     rotate (-90) {
