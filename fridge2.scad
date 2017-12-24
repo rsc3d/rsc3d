@@ -18,6 +18,7 @@ module fpart
     beta   = atan ((w3-w2) / l1);
     gamma  = atan ((w5-w4) / (l-l1));
     l3s    = l3 + w6 * sin (1);
+    al     = w4;
 
     difference () {
         intersection () {
@@ -50,13 +51,19 @@ module fpart
             rotate ([0, -gamma, 0])
                 translate ([0, -w, 0])
                     cube ([2*(l-l1), 3*w, h3]);
-        translate ([l1, 0, w4])
-            translate ([-0.01, -w, 0])
-                cube ([2*(l-l1)+0.01, 3*w, h3]);
-            translate ([l1, -0.01, h1])
+        translate ([l1-0.01, -w, w4])
+            cube ([2*(l-l1)+0.01, 3*w, h3]);
+        translate ([l1, -0.01, h1])
+            // For printing we need a 45° angle
+            difference () {
                 cube ([l-l1, w6, h3-h1]);
-            translate ([l-l3s-l2, w6-0.02, h1])
-                cube ([l2, w7+0.01, h3-h1]);
+                translate ([0, w6-(w4-h1), 0])
+                    rotate ([45, 0, 0])
+                        translate ([-l/3, 0, h1-h3])
+                            cube ([l, h3-h1, h3-h1]);
+            }
+        translate ([l-l3s-l2, w6-0.02-al, h1])
+            cube ([l2, w7+0.01+al, h3-h1]);
         // holes for railing
         for (lh = [lh1, lh2]) {
             translate ([lh, 0, hh])
@@ -81,6 +88,12 @@ module fpart
     // support for printing
     translate ([0, 0, 0.4])
         cube ([l-t, d/2 + hg + df/2, 0.8]);
+    translate ([l-l3s+l2/2-l2/3, w6+(2/3)*w7, 0])
+        rotate ([0, 0, 45])
+            cube ([0.8, w7/2, (w4+w5)/2]);
+    translate ([l-l3s-l2-l2/2+l2/3, w6+(2/3)*w7, 0])
+        rotate ([0, 0, -45])
+            cube ([0.8, w7/2, (w4+w5)/2]);
 }
 
 fpart ($fa = 1, $fs = .5);
