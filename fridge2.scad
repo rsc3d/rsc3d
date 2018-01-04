@@ -96,4 +96,6 @@ module fpart
             cube ([0.8, w7/2, (w4+w5)/2]);
 }
 
-fpart ($fa = 1, $fs = .5);
+mirror ([0, 1, 0])
+    rotate ([90, 0, 0])
+        fpart ($fa = 1, $fs = .5);
