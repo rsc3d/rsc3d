@@ -26,7 +26,7 @@ module lightcone (h=450, hb=30, ru=70, ro=22.5, w=3, w2=3, hole1=50.5, hole2=7)
                 , level_dist = hb
                 , vt_dir     = "SPI_UP"
                 );
-            cylinder (r=ru - (ru-ro) / (h/hb), h=hb);
+            cylinder (r=ru, h=hb);
         }
         translate ([0, 0, -1])
             cylinder (r1=ru-w, r2=ro-w, h=h+2);
@@ -67,4 +67,7 @@ difference () {
     // lower
     translate ([0, 0, -h + part * hprint])
         cylinder (r=2*ru, h=h);
+    // for partially-printed part 3
+    // translate ([0, 0, -h + part * hprint + 48])
+    //     cylinder (r=2*ru, h=h);
 }
