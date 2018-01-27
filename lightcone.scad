@@ -8,7 +8,6 @@ module lightcone (h=450, hb=30, ru=70, ro=22.5, w=3, w2=3, hole1=50.5, hole2=7)
 {
     inner_f = (ro - hole2) / h;
     inner_w = (1-inner_f) * ro + (inner_f) * ru;
-    echo (inner_f, ro, inner_w);
     factor  = 0.8;
     shape_pts = [[0, 0], [0, factor*hb+1], [ro, factor*hb+1], [ro, 0]];
     //polygon (points = shape_pts);
@@ -59,16 +58,19 @@ fs = 0.5;
 //fs = 2;
 hprint = 100;
 
-part = 4;
+part = 0;
 
 difference () {
     lightcone (h=h, ru=ru, $fa=fa, $fs=fs);
-    // upper
+    // cut away upper
     translate ([0, 0, (part + 1) * hprint])
         cylinder (r=2*ru, h=h);
-    // lower
+    // cut away lower
     translate ([0, 0, -h + part * hprint])
         cylinder (r=2*ru, h=h);
+    // for partially-printed part 0
+    // translate ([0, 0, -h + 24.2])
+    //     cylinder (r=2*ru, h=h);
     // for partially-printed part 3
     // translate ([0, 0, -h + part * hprint + 48])
     //     cylinder (r=2*ru, h=h);
