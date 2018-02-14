@@ -13,6 +13,8 @@ pll  = 15;   // length of plug with soldering
 cbld = 0.8;
 cblw = 9;
 
+ro   = 3;    // Radius of outer rounding
+
 m3r = m3 [screw_channel] / 2;
 
 module lower_part 
@@ -23,7 +25,17 @@ module lower_part
     )
 {
     difference () {
-        cube ([l+2*t, w+2*t, t+d+tb]);
+        hull () {
+            for (x = [ro, l+2*t-ro]) {
+                for (y = [ro, w+2*t-ro]) {
+                    translate ([x, y, ro])
+                        sphere (ro);
+                    translate ([x, y, ro])
+                        cylinder (r=ro, h=t+d+tb - ro);
+                }
+            }
+        }
+        //#cube ([l+2*t, w+2*t, t+d+tb]);
         translate ([t, t, t+d])
             cube ([2*sd+t, w, 3*t]);
         translate ([2*sd+t, t, t])
@@ -54,7 +66,17 @@ module upper_part
 {
     shcr = m3 [screw_head_channel]/2;
     difference () {
-        cube ([l+2*t, w+2*t, t+bh]);
+        //cube ([l+2*t, w+2*t, t+bh]);
+        hull () {
+            for (x = [ro, l+2*t-ro]) {
+                for (y = [ro, w+2*t-ro]) {
+                    translate ([x, y, ro])
+                        sphere (ro);
+                    translate ([x, y, ro])
+                        cylinder (r=ro, h=t+bh - ro);
+                }
+            }
+        }
         translate ([t+2*sd, t, t])
             cube ([bl-2*sd, w, 2*bh]);
         translate ([l/2, (w+2*t-cblw)/2, t+bh-cbld])
