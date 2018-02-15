@@ -9,8 +9,9 @@ tb   = 1.5;  // thickness of board
 sd   = 4;    // distance of holes from side
 plw  = 10.8; // width of plug
 pll  = 15;   // length of plug with soldering
+pp   = 9;    // plug position from quartz side
 // cable diameter and width of cables coming out
-cbld = 0.8;
+cbld = 0.6;
 cblw = 9;
 
 ro   = 3;    // Radius of outer rounding
@@ -20,10 +21,11 @@ m3r = m3 [screw_channel] / 2;
 module lower_part 
     ( l=l, bl=bl, w=w, t=t
     , d=d, sd=sd, tb=tb
-    , pll=pll, plw=plw, plh=0.6
+    , pll=pll, plw=plw, plh=0.6, pp=pp
     , cbld=cbld, cblw=cblw
     )
 {
+    ps = pp + t;
     difference () {
         hull () {
             for (x = [ro, l+2*t-ro]) {
@@ -40,9 +42,9 @@ module lower_part
             cube ([2*sd+t, w, 3*t]);
         translate ([2*sd+t, t, t])
             cube ([bl-2*sd, w, 3*t]);
-        translate ([bl+t-1, (w+2*t-plw)/2, t+d+plh])
+        translate ([bl+t-1, ps, t+d+plh])
             cube ([pll+1, plw, 3*t]);
-        translate ([l/2, (w+2*t-cblw)/2, t+d+tb-cbld])
+        translate ([l/2, ps+(plw-cblw)/2, t+d+tb-cbld])
             cube ([l, cblw, 3*t]);
         for (x = [sd+t, l-sd+t]) {
             for (y = [sd+t, w-sd+t]) {
@@ -58,13 +60,14 @@ module lower_part
 module upper_part
     ( l=l, bl=bl, w=w, t=t
     , d=d, sd=sd, tb=tb
-    , pll=pll, plw=plw, plh=1.6
+    , pll=pll, plw=plw, plh=1.6, pp=pp
     , cbld=cbld, cblw=cblw
     , bh=4.2
     , usbw=8, usbd=11.5
     )
 {
     shcr = m3 [screw_head_channel]/2;
+    ps   = pp + t;
     difference () {
         //cube ([l+2*t, w+2*t, t+bh]);
         hull () {
@@ -79,9 +82,9 @@ module upper_part
         }
         translate ([t+2*sd, t, t])
             cube ([bl-2*sd, w, 2*bh]);
-        translate ([l/2, (w+2*t-cblw)/2, t+bh-cbld])
+        translate ([l/2, w+2*t-plw-ps+(plw-cblw)/2, t+bh-cbld])
             cube ([l, cblw, 3*t]);
-        translate ([bl+t-1, (w+2*t-plw)/2, t+bh-plh])
+        translate ([bl+t-1, w+2*t-plw-ps, t+bh-plh])
             cube ([pll+1, plw, 3*t]);
         for (x = [sd+t, l-sd+t]) {
             for (y = [sd+t, w-sd+t]) {
