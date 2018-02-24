@@ -2,8 +2,8 @@ include <nuts.scad>
 
 l   = 92.8; // length of board including connectors
 w   = 60;   // width of board
-hl  =  3;   // height of highest part on bottom of board
-hb  =  2;   // height (width) of board (pcb)
+hl  =  2;   // height of highest part on bottom of board
+hb  =  1.8; // height (width) of board (pcb)
 ha  =  1;   // additional height above nut (below pcb at floor)
 h   = 15.5; // height of highest part on top of board
 t   =  2.5; // thickness of walls of box
@@ -25,6 +25,7 @@ u2p = 32;   // position of first usb
 pd  = 10;   // diameter of plug
 pp  =  8.5; // position of plug
 ph  =  6.5; // height of plug
+ah  =  1.3; // Additional depth of screw head on top
 mu  =  0.3; // Top part: move from edge to fit top
 rv  =  m3 [nut_diameter_low];          // additional reinforcement for nuts
 rz  =  m3 [screw_head_channel] / 2;    // support at holes
@@ -96,7 +97,8 @@ module bottom
             for (x = [rxl, l-rxr]) {
                 for (y = [rd-rw/2, w-(rd-rw/2)]) {
                     translate ([x, y, -0.01]) {
-                        nut_hole (m3, m3 [nut_height]);
+                        rotate ([0, 0, 90])
+                            nut_hole (m3, m3 [nut_height]);
                         cylinder (r=m3 [screw_channel]/2, h=2*h);
                     }
                 }
@@ -171,7 +173,7 @@ module top
             for (x = [rxl, l-rxr]) {
                 for (y = [rd-rw/2, w-(rd-rw/2)]) {
                     translate ([x, y, -0.01]) {
-                        cylinder (r=rz, h=m3[screw_head_height]);
+                        cylinder (r=rz, h=m3[screw_head_height]+ah);
                         cylinder (r=m3 [screw_channel]/2, h=2*h);
                     }
                 }
