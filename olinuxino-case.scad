@@ -1,48 +1,49 @@
 include <nuts.scad>
 
-l   = 92.8; // length of board including connectors
-w   = 60;   // width of board
+l   = 95.8; // length of board including connectors
+w   = 62;   // width of board
 hl  =  2;   // height of highest part on bottom of board
 hb  =  1.8; // height (width) of board (pcb)
 ha  =  1;   // additional height above nut (below pcb at floor)
 h   = 15.5; // height of highest part on top of board
 t   =  2.5; // thickness of walls of box
-hx  = 20;   // X-coordinate of hole
-hy  = 15.5; // Y-coordinate of hole
+hx  =  6;   // X-coordinate of hole from first recess (negative)
+h2h = 28;   // Y hole-to-hole (holes are equal distance from center)
 sx  = 38;   // X-coordinate of support from hole
 rxl = 27;   // Recess in pcb left  X
-rxr = 25;   // Recess in pcb right X
-rw  =  6.3; // Recess width
-rr  = 34.3; // Recess-to-recess
-rd  =  8.2; // Recess depth
-ri  =  3;   // Radius of inner rounding
+rxr = 27.5; // Recess in pcb right X
+rw  =  6;   // Recess width
+rr  = 35.3; // Recess-to-recess
+rd  =  8.7; // Recess depth
+ri  =  1.5; // Radius of inner rounding
 ew  = 14.8; // width of ethernet
-ep  =  5;   // position of ethernet
+ep  =  6;   // position of ethernet
 eh  =  3;   // ethernet from top (max height - eh)
 uw  =  7.5; // width of usb
-u1p = 22.5; // position of first usb
-u2p = 32;   // position of first usb
+u1p = 23.5; // position of first usb
+u2p = 33;   // position of second usb
 pd  = 10;   // diameter of plug
-pp  =  8.5; // position of plug
+pp  =  9.5; // position of plug
 ph  =  6.5; // height of plug
-ah  =  1.3; // Additional depth of screw head on top
+ah  =  0;   // Additional depth of screw head on top
 mu  =  0.3; // Top part: move from edge to fit top
 rv  =  m3 [nut_diameter_low];          // additional reinforcement for nuts
 rz  =  m3 [screw_head_channel] / 2;    // support at holes
 ss  =  (m3 [screw_channel] - 0.5) / 2; // fit in board holes
+hy  =  (w - h2h) / 2; // Y-coordinate of hole
+ro  = ri + t;
 
 // We need to have l = rxl + rw/2 + rr + rw/2 + rxr
+
 // Bottom layer must be a little thicker than nut height, so t > nut height
 
 module bottom
     ( l=l, w=w, hl=hl, hb=hb, ha=ha, h=h, t=t
-    , hx=20, hy=16.5
+    , hx=hx, hy=hy
     , rxl=rxl, rxr=rxr, rw=rw, rr=rr, rd=rd
-    , ri=ri, rv=rv, rz=rz, ss=ss
+    , ri=ri, ro=ro, rv=rv, rz=rz, ss=ss
     )
 {
-    ro = ri + t;
-    echo (ro);
     difference () {
         union () {
             difference () {
@@ -82,14 +83,14 @@ module bottom
                     }
                 }
                 for (y = [hy, w-hy]) {
-                    translate ([hx, y, t-0.01]) {
+                    translate ([rxl-hx, y, t-0.01]) {
                         cylinder (r=rv, h=ha);
                         cylinder (r=ss, h=ha+hb+hl);
                         cylinder (r=rz, h=ha+hl);
                     }
                 }
                 // Support position
-                translate ([hx+sx, w/2, t-0.01])
+                translate ([rxl-hx+sx, w/2, t-0.01])
                     cylinder (r=rz, h=ha+hl);
             }
         }
@@ -104,7 +105,7 @@ module bottom
                 }
             }
             // Remove part of support cylinder for SD-Card slot
-            translate ([hx-rz-ss, hy, t + ha + rz])
+            translate ([rxl-hx-rz-ss, hy, t + ha + rz])
                 cube (2*rz, center=true);
             // Ethernet, USB1, USB2
             translate ([l-6*t, ep, t+ha+hl+hb+0.01])
@@ -119,13 +120,12 @@ module bottom
 
 module top
     ( l=l, w=w, hl=hl, hb=hb, ha=ha, h=h, t=t
-    , hx=20, hy=16.5
+    , hx=hx, hy=hy
     , rxl=rxl, rxr=rxr, rw=rw, rr=rr, rd=rd
-    , ri=ri, rv=rv, rz=rz, ss=ss
+    , ri=ri, ro=ro, rv=rv, rz=rz, ss=ss
     , mu=mu
     )
 {
-    ro = ri + t;
     difference () {
         union () {
             render () hull () {
@@ -156,17 +156,17 @@ module top
                         cube ([rr + rw, t, (h+t)/2]);
                 }
                 translate ([mu, (w-rr)/2, ro-t/2])
-                    cube ([t, rr, (h+t)/2]);
+                    cube ([2*t, rr, (h/2+t)/2]);
                 for (y = [hy, w-hy]) {
-                    translate ([hx, y, ro-0.01]) {
+                    translate ([rxl-hx, y, ro-0.01]) {
                         cylinder (r=rz, h=h);
                     }
                 }
-                translate ([hx-t/2, hy, ro-0.01])
+                translate ([rxl-hx-t/2, hy, ro-0.01])
                     cube ([t, w-2*hy, h-hl]);
-                // thicker wall at Ethernet and usb
-                translate ([l-4*t, w-(ew+2*uw)-(ep+0.1), ro-0.01])
-                    cube ([5*t, ew+2*uw, h]);
+                // Ethernet wall (above)
+                translate ([l, w-(ew)-(ep+0.01), ro-0.01])
+                    cube ([t, ew-0.02, eh]);
             }
         }
         translate ([t, t, 0]) {
@@ -178,21 +178,13 @@ module top
                     }
                 }
             }
-            // Ethernet
-            translate ([l-8*t, w-ew-ep, ro])
-                cube ([8*t, ew, h]);
-            translate ([l-6*t, w-ew-ep, ro+eh+0.01])
-                cube ([8*t, ew, h-eh]);
-            // USB1, USB2
-            for (y = [u1p, u2p]) {
-                translate ([l-6*t, w-uw-y, ro])
-                    cube ([8*t, uw, h]);
-            }
         }
     }
 }
 
-translate ([0,  5, 0])
-    bottom ($fa=3, $fs=0.5);
-translate ([0, -(w+2*t), 0])
-    top    ($fa=3, $fs=0.5);
+rotate ([0, 0, 90]) {
+    translate ([0,  5, 0])
+        bottom ($fa=3, $fs=0.5);
+    translate ([0, -(w+2*t), 0])
+        top    ($fa=3, $fs=0.5);
+}
