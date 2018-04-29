@@ -46,20 +46,22 @@ module bottom
     difference () {
         union () {
             difference () {
-                render () hull () {
-                    for (x = [ro, l+2*t-ro]) {
-                        for (y = [ro, wdb+2*t-ro]) {
-                            translate ([x, y, ro])
-                                sphere (ro);
-                            translate ([x, y, ro])
-                                cylinder (r=ro, h=t+hl+hb+h - ro);
+                translate ([t, t, 0]) {
+                    render () hull () {
+                        for (x = [0, l]) {
+                            for (y = [0, wdb]) {
+                                translate ([x, y, ro])
+                                    sphere (ro);
+                                translate ([x, y, ro])
+                                    cylinder (r=ro, h=t+hl+hb+h - ro);
+                            }
                         }
                     }
                 }
                 translate ([t, t, t]) {
                     render () hull () {
-                        for (x = [ri, l-ri]) {
-                            for (y = [ri+wdif, wdif+w-ri]) {
+                        for (x = [0, l]) {
+                            for (y = [wdif, wdif+w]) {
                                 translate ([x, y, ri])
                                     sphere (ri);
                                 translate ([x, y, ri])
@@ -83,24 +85,26 @@ module bottom
                                   - ( sgn (xy [2])
                                     * ((abs (xy [2]) + mr) / 2 - mr)
                                     )
+                                  - sgn (xy [2]) * ri / 2
                                   )
-                                , xy [1] + xy [3] / 2
+                                , xy [1] + xy [3] / 2 - sgn (xy [3]) * ri / 2
                                 , hl/2-e
                                 ]
                               )
-                        cube ( [abs (xy [2]) + mr, abs (xy [3]), hl]
+                        cube ( [abs (xy [2])+mr+ri, abs (xy [3])+ri, hl]
                              , center=true
                              );
-                    translate ( [ xy [0] + xy [2] / 2
+                    translate ( [ xy [0] + xy [2] / 2 - sgn (xy [2]) * ri / 2
                                 , ( xy [1] + xy [3]
                                   - ( sgn (xy [3])
                                     * ((abs (xy [3]) + mr) / 2 - mr)
                                     )
+                                  - sgn (xy [3]) * ri / 2
                                   )
                                 , hl/2-e
                                 ]
                               )
-                        cube ( [abs (xy [2]), abs (xy [3]) + mr, hl]
+                        cube ( [abs (xy [2])+ri, abs (xy [3])+mr+ri, hl]
                              , center=true
                              );
                 }
@@ -131,11 +135,11 @@ module bottom
         //translate ([t + usbx, t, husb / 2 + t + hl + hb + usbz])
         //    cube ([wusb, 3 * t, husb], center = true);
         translate ([t + usbx, t, husb / 2 + t + hl + hb + usbz])
-            cube ([wusb/3-.8, 3 * t, husb], center = true);
+            cube ([wusb/3-.8, 5 * t, husb], center = true);
         translate ([t + usbx + wusb/3, t, husb / 2 + t + hl + hb + usbz])
-            cube ([wusb/3, 3 * t, husb], center = true);
+            cube ([wusb/3, 5 * t, husb], center = true);
         translate ([t + usbx - wusb/3, t, husb / 2 + t + hl + hb + usbz])
-            cube ([wusb/3, 3 * t, husb], center = true);
+            cube ([wusb/3, 5 * t, husb], center = true);
     }
 }
 
@@ -149,20 +153,22 @@ module top
     difference () {
         union () {
             difference () {
-                render () hull () {
-                    for (x = [ro, l+2*t-ro]) {
-                        for (y = [ro, wdb+2*t-ro]) {
-                            translate ([x, y, ro])
-                                sphere (ro);
-                            translate ([x, y, ro])
-                                cylinder (r=ro, h=htop - ro);
+                translate ([t, t, 0]) {
+                    render () hull () {
+                        for (x = [0, l]) {
+                            for (y = [0, wdb]) {
+                                translate ([x, y, ro])
+                                    sphere (ro);
+                                translate ([x, y, ro])
+                                    cylinder (r=ro, h=htop - ro);
+                            }
                         }
                     }
                 }
                 translate ([t, t, t]) {
                     render () hull () {
-                        for (x = [ri, l-ri]) {
-                            for (y = [ri, wdb-ri]) {
+                        for (x = [0, l]) {
+                            for (y = [0, wdb]) {
                                 translate ([x, y, ri])
                                     sphere (ri);
                                 translate ([x, y, ri])
@@ -186,24 +192,26 @@ module top
                                   - ( sgn (xy [2])
                                     * ((abs (xy [2]) + mr) / 2 - mr)
                                     )
+                                  - sgn (xy [2]) * ri / 2
                                   )
-                                , xy [1] + xy [3] / 2
+                                , xy [1] + xy [3] / 2 - sgn (xy [3]) * ri / 2
                                 , hmount/2-e
                                 ]
                               )
-                        cube ( [abs (xy [2]) + mr, abs (xy [3]), hmount]
+                        cube ( [abs (xy [2])+mr+ri, abs (xy [3])+ri, hmount]
                              , center=true
                              );
-                    translate ( [ xy [0] + xy [2] / 2
+                    translate ( [ xy [0] + xy [2] / 2 - sgn (xy [2]) * ri / 2
                                 , ( xy [1] + xy [3]
                                   - ( sgn (xy [3])
                                     * ((abs (xy [3]) + mr) / 2 - mr)
                                     )
+                                  - sgn (xy [3]) * ri / 2
                                   )
                                 , hmount/2-e
                                 ]
                               )
-                        cube ( [abs (xy [2]), abs (xy [3]) + mr, hmount]
+                        cube ( [abs (xy [2])+ri, abs (xy [3])+mr+ri, hmount]
                              , center=true
                              );
                 }
@@ -231,8 +239,8 @@ module top
                 cube ([l+2*t, wdb+2*t, 2*h]);
                 translate ([t, t, 0]) {
                     render () hull () {
-                        for (x = [ri+d, l-ri-d]) {
-                            for (y = [ri+wdif+d, wdif+w-ri-d]) {
+                        for (x = [d, l-d]) {
+                            for (y = [wdif+d, wdif+w-d]) {
                                 translate ([x, y, -e])
                                     cylinder (r=ri, h=3*h);
                             }
@@ -249,6 +257,6 @@ module top
 //        bottom ($fa=3, $fs=0.5);
 //    translate ([0, -(w+2*t), 0])
         top    ($fa=3, $fs=0.5);
-    translate ([l + 3*t, 0, 0])
+    translate ([l + 3*t + 2*ro, 0, 0])
         bottom ($fa=3, $fs=0.5);
 //}
