@@ -31,6 +31,7 @@ hld = 11;    // height of highest part on bottom of display-board
 hbd =  1.7;  // height (width) of display-board (pcb)
 hd  =  4;    // height of highest part on top of display-board
 dx  = 20;    // Display position from left (right on upside-down top-module)
+d   = 0.5;   // A small delta for fitting parts
 ro   = ri + t;
 wdif = (wdb-w) / 2;
 
@@ -139,11 +140,12 @@ module bottom
 }
 
 module top
-    ( l=l, wdb=wdb, hld=hld, hbd=hbd, hd=hd, t=t, wdif=wdif
+    ( l=l, wdb=wdb, hld=hld, hbd=hbd, hd=hd, t=t, wdif=wdif, h=h
     , ri=ri, ro=ro
     )
 {
-    hmount = hld+hbd+hd;
+    htop   = t+hld+hbd+hd;
+    hmount = hld+hbd+hd+h;
     difference () {
         union () {
             difference () {
@@ -153,7 +155,7 @@ module top
                             translate ([x, y, ro])
                                 sphere (ro);
                             translate ([x, y, ro])
-                                cylinder (r=ro, h=t+hld+hbd+hd - ro);
+                                cylinder (r=ro, h=htop - ro);
                         }
                     }
                 }
@@ -220,6 +222,22 @@ module top
                     cylinder ( r=m3 [screw_head_channel]/2
                              , h=m3[screw_head_height]
                              );
+                }
+            }
+        }
+        // round corners for mounting
+        translate ([0, 0, htop]) {
+            difference () {
+                cube ([l+2*t, wdb+2*t, 2*h]);
+                translate ([t, t, 0]) {
+                    render () hull () {
+                        for (x = [ri+d, l-ri-d]) {
+                            for (y = [ri+wdif+d, wdif+w-ri-d]) {
+                                translate ([x, y, -e])
+                                    cylinder (r=ri, h=3*h);
+                            }
+                        }
+                    }
                 }
             }
         }
