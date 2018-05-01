@@ -6,7 +6,7 @@ l   = 146;   // length of board excluding connectors
 w   = 58.5;  // width of board
 hl  =  4.5;  // height of highest part on bottom of board
 hb  =  1.4;  // height (width) of board (pcb)
-h   = 20;    // height of highest part on top of board
+h   = 14.4;  // height of highest part on top of board
 ri  =  1.5;  // Radius of inner rounding
 t   =  2.5;  // thickness of walls of box
 pd  = 11;    // diameter of plug-hole
@@ -27,9 +27,9 @@ wdb = 60.3;  // width of display board
 wd  = 40;    // width of display
 ldb = 98.3;  // length of display board
 ld  = 97.3;  // length of display
-hld = 11;    // height of highest part on bottom of display-board
+hld =  8;    // height of highest part on bottom of display-board
 hbd =  1.7;  // height (width) of display-board (pcb)
-hd  =  4;    // height of highest part on top of display-board
+hd  =  2;    // height of highest part on top of display-board
 d   = 0.5;   // A small delta for fitting parts
 m3r = 9/2;   // Enough space for an m3 nut hole
 hdh = 2.5;   // hole distance of screw-hole of display (x+y all holes)
@@ -177,7 +177,7 @@ module top
                                 translate ([x, y, ri])
                                     sphere (ri);
                                 translate ([x, y, ri])
-                                    cylinder (r=ri, h=5*hd);
+                                    cylinder (r=ri, h=3*h);
                             }
                         }
                     }
@@ -227,12 +227,12 @@ module top
                     for (y = [hdh, wdb-hdh]) {
                         translate ([x, y, 0])
                             cylinder (r=m3r, h=hd);
-                        translate ([x, y+(y>hd?1:-1)*m3r/2, hd/2])
+                        translate ([x, y+(y>hdh?1:-1)*m3r/2, hd/2])
                             cube ([2*m3r, m3r, hd], center=true);
                     }
                 }
                 for (y = [hdh, wdb-hdh]) {
-                    translate ([ldb-hdh+m3r/2, y+(y>hd?1:-1)*m3r/2, hd/2])
+                    translate ([ldb-hdh+m3r/2, y+(y>hdh?1:-1)*m3r/2, hd/2])
                         cube ([2*m3r, m3r, hd], center=true);
                 }
             }
@@ -278,7 +278,7 @@ module top
                 for (y = [hdh, wdb-hdh]) {
                     translate ([x, y, 0]) {
                         translate ([0, 0, -hd])
-                            cylinder (r=m3 [screw_channel]/2, h=3*hd);
+                            cylinder (r=m3 [screw_channel]/2, h=7*hd);
                         cylinder ( r=m3 [screw_head_channel]/2
                                  , h=m3[screw_head_height]
                                  );
