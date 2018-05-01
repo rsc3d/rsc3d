@@ -30,8 +30,11 @@ ld  = 97.3;  // length of display
 hld = 11;    // height of highest part on bottom of display-board
 hbd =  1.7;  // height (width) of display-board (pcb)
 hd  =  4;    // height of highest part on top of display-board
-dx  = 20;    // Display position from left (right on upside-down top-module)
 d   = 0.5;   // A small delta for fitting parts
+m3r = 9/2;   // Enough space for an m3 nut hole
+hdh = 2.5;   // hole distance of screw-hole of display (x+y all holes)
+rot = 3.7;   // hole for rotary encoder
+dx   = hllx+mr+m3r/2; // Display pos from left (right on upside-down top-module)
 ro   = ri + t;
 wdif = (wdb-w) / 2;
 
@@ -43,6 +46,7 @@ module bottom
     , wusb=wusb, husb=husb, usbx=usbx, usbz=usbz
     )
 {
+    echo ("h-bottom:", hl+hb+h+t);
     difference () {
         union () {
             difference () {
@@ -150,6 +154,7 @@ module top
 {
     htop   = t+hld+hbd+hd;
     hmount = hld+hbd+hd+h;
+    echo ("h-top:", htop);
     difference () {
         union () {
             difference () {
@@ -216,6 +221,21 @@ module top
                              );
                 }
             }
+            // mounting display
+            translate ([t+l-ldb-dx, t, t]) {
+                for (x = [hdh, ldb-hdh]) {
+                    for (y = [hdh, wdb-hdh]) {
+                        translate ([x, y, 0])
+                            cylinder (r=m3r, h=hd);
+                        translate ([x, y+(y>hd?1:-1)*m3r/2, hd/2])
+                            cube ([2*m3r, m3r, hd], center=true);
+                    }
+                }
+                for (y = [hdh, wdb-hdh]) {
+                    translate ([ldb-hdh+m3r/2, y+(y>hd?1:-1)*m3r/2, hd/2])
+                        cube ([2*m3r, m3r, hd], center=true);
+                }
+            }
         }
         // Screws
         translate ([t, t, 0]) {
@@ -249,14 +269,31 @@ module top
                 }
             }
         }
+        // hole for display
+        translate ([t+l-ld-dx, t+(wdb-wd)/2, -t])
+            cube ([ld, wd, 3*t]);
+        // Holes for display screws
+        translate ([t+l-ldb-dx, t, 0]) {
+            for (x = [hdh, ldb-hdh]) {
+                for (y = [hdh, wdb-hdh]) {
+                    translate ([x, y, 0]) {
+                        translate ([0, 0, -hd])
+                            cylinder (r=m3 [screw_channel]/2, h=3*hd);
+                        cylinder ( r=m3 [screw_head_channel]/2
+                                 , h=m3[screw_head_height]
+                                 );
+                    }
+                }
+            }
+        }
+        // Hole for rotary encoder
+        // In middle of remaining space right of display
+        translate ([t+(l-ldb-dx)/2, wdb/2, -t])
+            cylinder (r=rot, h=3*t);
     }
 }
 
-//rotate ([0, 0, 90]) {
-    //translate ([0,  5, 0])
-//        bottom ($fa=3, $fs=0.5);
-//    translate ([0, -(w+2*t), 0])
-        top    ($fa=3, $fs=0.5);
-    translate ([l + 3*t + 2*ro, 0, 0])
-        bottom ($fa=3, $fs=0.5);
-//}
+top    ($fa=3, $fs=0.5);
+//translate ([l + 3*t + ro, 0, 0])
+translate ([0, wdb+3*3+ro, 0])
+    bottom ($fa=3, $fs=0.5);
