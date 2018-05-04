@@ -17,11 +17,13 @@ wusb = 11;   // width  of usb plug
 husb =  8;   // height of usb plug
 usbx = 39;   // X-Pos of Pluhole middle
 usbz = 3.5;  // Z-Pos (height above board) of usb
-huy  = 5.5;  // Upper hole Y
-hly  = 7.5;  // Lower hole Y
-hulx = 7.5;  // Upper left hole X
-hllx = 9;    // Lower left hole X
-hrx  = 6;    // Right hole X
+hury = 5.5;  // Hole upper right Y
+huly = 6;    // Hole upper left Y
+hly  = 8.5;  // Lower hole Y
+hulx = 8;    // Upper left hole X
+hllx = 9.5;  // Lower left hole X
+hurx = 6;    // Upper right hole X
+hlrx = 6.5;  // Lower right hole X
 mr   = 4;    // Mount radius
 wdb = 60.3;  // width of display board
 wd  = 40;    // width of display
@@ -41,7 +43,8 @@ wdif = (wdb-w) / 2;
 module bottom
     ( l=l, w=w, wdb=wdb, hl=hl, hb=hb, h=h, t=t, wdif=wdif
     , ri=ri, ro=ro
-    , huy=huy, hly=hly, hulx=hulx, hllx=hllx, hrx=hrx, mr=mr
+    , huly=huly, hury=hury, hly=hly, hulx=hulx, hllx=hllx, hurx=hurx, hlrx=hlrx
+    , mr=mr
     , pd=pd, ph=ph, pdet=pdet, pdut=pdut
     , wusb=wusb, husb=husb, usbx=usbx, usbz=usbz
     )
@@ -77,10 +80,10 @@ module bottom
             }
             // mounting
             translate ([t, t, t]) {
-                for (xy = [ [0, wdif+w,  hulx, -huy]
-                          , [l, wdif+w, -hrx,  -huy]
+                for (xy = [ [0, wdif+w,  hulx, -huly]
+                          , [l, wdif+w, -hurx, -hury]
                           , [0, 0,       hllx,  hly]
-                          , [l, 0,      -hrx,   hly]
+                          , [l, 0,      -hlrx,  hly]
                           ])
                 {
                     translate ([xy [0] + xy [2], xy [1] + xy [3], -e])
@@ -116,10 +119,10 @@ module bottom
         }
         // Screws
         translate ([t, t, 0]) {
-            for (xy = [ [0, wdif+w,  hulx, -huy]
-                      , [l, wdif+w, -hrx,  -huy]
+            for (xy = [ [0, wdif+w,  hulx, -huly]
+                      , [l, wdif+w, -hurx, -hury]
                       , [0, 0,       hllx,  hly]
-                      , [l, 0,      -hrx,   hly]
+                      , [l, 0,      -hlrx,  hly]
                       ])
             {
                 translate ([xy [0] + xy [2], xy [1] + xy [3], -e]) {
@@ -185,9 +188,9 @@ module top
             }
             // mounting
             translate ([t, t, t]) {
-                for (xy = [ [0, wdb,  hrx,  -huy-wdif]
-                          , [l, wdb, -hulx, -huy-wdif]
-                          , [0, 0,    hrx,   hly]
+                for (xy = [ [0, wdb,  hurx, -hury-wdif]
+                          , [l, wdb, -hulx, -huly-wdif]
+                          , [0, 0,    hlrx,  hly]
                           , [l, 0,   -hllx,  hly]
                           ])
                 {
@@ -239,9 +242,9 @@ module top
         }
         // Screws
         translate ([t, t, 0]) {
-            for (xy = [ [0, wdif+w,  hrx,  -huy]
-                      , [l, wdif+w, -hulx, -huy]
-                      , [0, 0,       hrx,   hly]
+            for (xy = [ [0, wdif+w,  hurx, -hury]
+                      , [l, wdif+w, -hulx, -huly]
+                      , [0, 0,       hlrx,  hly]
                       , [l, 0,      -hllx,  hly]
                       ])
             {
@@ -292,6 +295,9 @@ module top
             cylinder (r=rot, h=3*t);
     }
 }
+
+//projection(cut = false)
+//mirror ([0, 1, 0])
 
 top    ($fa=3, $fs=0.5);
 //translate ([l + 3*t + ro, 0, 0])
