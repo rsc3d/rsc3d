@@ -33,6 +33,9 @@ module nut_hole (nut, h)
     }
 }
 
+// A screw channel + cone for a sunk screw, with h2 it can be deeper
+// h is the length of the screw, h2 is how far it is sunk in the cone
+// height/width only depends on the given nut.
 module countersunk_screw_hole (nut, h, h2 = 0)
 {
     cylinder
@@ -44,5 +47,23 @@ module countersunk_screw_hole (nut, h, h2 = 0)
     translate ([0, 0, -h2])
         cylinder (r = nut [screw_head_channel] * 1.1 / 2, h = h2);
 }
+//translate ([5, 0, 0])
+//    countersunk_screw_hole (m5, 10, 10, $fa = 6, $fs = .5);
 
-//countersunk_screw_hole (m5, 10, 10, $fa = 6, $fs = .5);
+// A channel for a sideways embedded nut
+// ehf is the factor for the embedded height for the hole of the nut, we
+// make it a little wider than nut-height by default, but it can be
+// overridden.
+// ewf is the factor for the width of the hole (nut diameter * ewf)
+module embedded_nut (nut, h, ehf=1.3, ewf=1)
+{
+    w = (nut [nut_diameter_low] + nut [nut_diameter_high]) / 2;
+    union () {
+        translate ([0, -w * ewf * 0.5, 0])
+            cube ([nut [nut_height] * ehf, w * ewf, h]);
+        rotate ([0, 90, 0]) rotate ([0, 0, 30])
+            nut_hole (nut, nut [nut_height] * ehf);
+    }
+}
+//embedded_nut (m3, 20);
+

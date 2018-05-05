@@ -1,124 +1,96 @@
-e = 0.1; // epsilon
-$fn = 100;
-include <nuts.scad>;
+include <nuts.scad>
 
-// Nut embedding:
-//
-//                         +--D
-//                         |  |
-//                         |  |
-//   X---------------------A  |-------
-//                         |  |
-//                         |  | nr
-//                         B--C
-//                         nh
-// X: center of circle
-// We want some space between nut and outer diameter, x, so that the nut
-// fits nicely into the gap between outer and inner diameter.
-// Since we over-estimate that gap below and because we're using the 
-// *long* width of the nut, we set x to 0 in the code
-// below (x is the width of the gap not including the nut height).
-// We want the radius of the outer circle ro
-// z = XB, ri = XA (inner radius), nh = BC (nut height), nr = CD (nut radius)
-// we have
-// z² = (ri)² + (nr)²
-// and approx. (we get a little more space, better)
-// x = ro - z - nh
-// solving for ro we get:
-// ro = x + z + nh = x + sqrt (ri² + nr²) + nh
-//
+e=0.01; // epsilon
+kd=30;  // knob diameter
+kdo=kd; // for conic knob outer diameter (the diameter facing the user)
+ad=6;   // axis diameter
+ah=17;  // height of axis from bottom of case (=knob height excluding thickness)
+aw=4;   // wall around axis
+af=1.5; // width of flat part of axis
+t=2.5;  // thickness of outer wall
+sl=10;  // length of screw excluding screw head
+hs=7;   // height of inner part before axis starts
+d=0.5;  // Delta by which axis is made larger (to fit) and screw head is deeper
+md=2;   // Minimum distance of screw head and nut
+nut=m3;
 
-
-module knob_hollow (r1, r2, r3, r4, nut_end, nut_h, height, lift)
+module inner_hollow (rhi, rho, rhoo, h)
 {
-    // Enough material to block nut
-    ro = max (r3, nut_end + nut_h);
-    translate ([0, 0, lift])
-    {
-        difference () {
-            cylinder (h = height, r = r2);
-            translate ([0, 0, -e])
-                cylinder (h = height + 2 * e, r = r1);
-        }
-        if (r4 - ro > 1) {
+    difference () {
+        cylinder (r1=rho, r2=rhoo, h=h);
+        translate ([0, 0, -h])
+            cylinder (r=rhi, h=3*h);
+    }
+}
+
+module axis (r, x, h, d)
+{
+    difference () {
+        cylinder (r=r+d, h=h);
+        translate ([2*r-x+d, 0, 0])
+            cube ([2*r, 2*r, 3*h], center = true);
+    }
+}
+
+module screwguide (kr, ar, af, ri, h, nut, min_d=2)
+{
+    // min_d is the minimum distance between axis and nut and outer
+    // material of nut
+    w = max (2*ri, nut [nut_diameter_high] + 2*min_d);
+    difference () {
+        translate ([(kr-ar+af)/2+ar-af, 0, h/2])
+            cube ([kr-ar+af, w, h], center = true);
+            // Remove the part that would overlap the knob outer dia
             difference () {
-                cylinder (h = height, r = r4);
-                translate ([0, 0, -e])
-                    cylinder (h = height + 2 * e, r = ro);
+                translate ([0, 0, -h])
+                    cylinder (r=2*kr, h=3*h);
+                translate ([0, 0, -2*h])
+                    cylinder (r=kr-e, h=5*h);
             }
-        }
     }
 }
 
-module screw_hole (l, nut_start, nut_end, head_start, nut, height)
+module knob
+    ( kd=kd, kdo=kdo
+    , ad=ad, ah=ah, aw=aw, af=af
+    , t=t, sl=sl, hs=hs, d=d, md=md, nut=nut
+    )
 {
-    translate ([0, 0, height]) rotate ([-90, 0, 0])
-        union () {
-            cylinder (h = l, r = nut [screw_channel] / 2);
-            translate ([0, 0, head_start])
-                cylinder (h = l - head_start, r = nut [screw_head_channel] / 2);
-            translate ([0, 0, nut_start])
-                nut_hole (nut, nut_end - nut_start);
-        }
-}
-
-module knob_body (knob_dia, axis_dia, axis_carve, conic, depth, top)
-{
-    kr  = knob_dia / 2;
-    ad  = axis_dia * 1.2; // Adjust for smooth insertion
-    ar  = ad / 2;
-    union () {
-        difference () {
-            cylinder (h = depth, r = kr);
-            translate ([0, 0, top + e])
-                cylinder (h = depth - top, r = ar);
-        }
-        translate ([0, (1-axis_carve) * ad, depth / 2])
-            cube ([ad, ad, depth], center = true);
-    }
-}
-
-module knob (knob_dia, axis_dia, axis_carve, conic, depth, hole_h, nut)
-{
-    top     = 1.8;
-    hole_d  = depth - hole_h;
-    ar      = axis_dia / 2;
-    kr      = knob_dia / 2;
-    nr      = nut [nut_diameter_high] / 2;
-    nh      = nut [nut_height];
-    hh      = nut [screw_head_height];
-    r_i     = (axis_dia + 8) / 2;
-    inner_r = sqrt (pow (nr, 2) + pow (nh + r_i, 2)) + 1;
-    outer_r = sqrt (pow (inner_r, 2) + pow (nr, 2)) + nh;
-    r_o     = (knob_dia - 2) / 2;
-    ne      = min (inner_r + nh, kr - hh - nh);
-    do_st   = inner_r + nh / 2 > ne;
-    i_r     = do_st ? r_o : inner_r;
-    ahr     = ar * 1.2;
-    ho_o    = r_o > r_i + 3.5 * nh;
-    do_ho   = r_o > ahr + 4.5 * nh;
-    sl      = r_o - ahr;
-    sw      = 1.5 * max (2 * nr, nut [screw_head_channel]);
-    nutc_s  = ho_o ? r_i : ahr + nh;
-    nutc_e  = do_st ? nutc_s + 1.5 * nh : ne;
-
+    kr  = kd/2;    // knob radius
+    kro = kdo/2;   // outer knob radius
+    h   = ah + t;  // height (incl material thickness)
+    ar  = ad/2;    // axis radius
+    ri  = ar + aw; // inner radius around axis
     difference () {
         union () {
             difference () {
-                knob_body   (knob_dia, axis_dia, axis_carve, conic, depth, top);
-                knob_hollow (r_i, i_r, outer_r, r_o, ne, nh, depth, top);
+                cylinder (r1=kro, r2=kr, h=h);
+                // subtract inner hollow
+                translate ([0, 0, t])
+                    inner_hollow (ri, kr-t, kro-t, h);
             }
-            if (do_st && do_ho) {
-                translate ([0, sl / 2 + ahr, depth / 2])
-                    cube ([sw, sl, depth], center = true);
-            }
+            screwguide (kr, ar, af, ri, t+h-hs, nut);
         }
-        if (do_ho) {
-            screw_hole  (kr + e, nutc_s, nutc_e, kr - hh, nut, hole_d);
-            translate ([0, 0.75 * nh + nutc_s, -hole_d / 2 + depth + e])
-                cube ([2 * nr, 1.5 * nh, hole_d + 2 * e], center = true);
-        }
+        // cut out axis
+        translate ([0, 0, t])
+            axis (r=ar, x=af, h=h, d=d);
+        // cut out non-axis part of inner knob
+        translate ([0, 0, t+h-hs])
+            cylinder (r=kro-t, h=h);
+        // screw channel in middle of height of inner isle
+        translate ([0, 0, (t+h-hs)/2])
+            rotate ([0, 90, 0])
+                cylinder (r=nut [screw_channel]/2, h=kr+t);
+        // screw head channel
+        translate ([0, 0, (t+h-hs)/2])
+            translate ([sl+ar-af-d, 0, 0])
+                rotate ([0, 90, 0])
+                    cylinder (r=nut [screw_head_channel]/2, h=kr+t);
+        // embedded nut
+        translate ([ar-af+sl-md-d, 0, (t+h-hs)/2])
+            rotate ([0, 0, 180])
+                embedded_nut (nut, h);
     }
 }
 
-knob (30, 4.5, 0, 0, 15, 7.5, m3);
+knob ($fa=3, $fs=.5);
