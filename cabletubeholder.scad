@@ -22,6 +22,11 @@ module recess (l, h)
     }
 }
 
+// dia:   Diameter of hole
+// screw: Diameter of screw
+// l:     Thickness of wall around hole (length) (X)
+// w:     Width of part below tube hole (affects length of screw) (Y)
+// h:     Width of holder (thickness) (Z)
 module holder (dia, screw, l, w, h)
 {
     r  = dia / 2;
@@ -93,10 +98,34 @@ module holder (dia, screw, l, w, h)
 
 // Cable holder with 3mm screw
 // For 8mm cable
-// older (8, 3.2, 11.5, 9, 8);
+// holder (8, 3.2, 11.5, 9, 8);
 // For 9mm cable
 // holder (9, 3.2, 12.5, 9, 8);
 
 // Single holder
-holder (24.5, 5, 34, 13, 12);
+//holder (24.5, 5, 34, 13, 12);
 
+// For 18mm copper tubing
+translate ([0, 0, 5]) {
+    translate ([29, 0, 0])
+    holder (18, 3.2, 27, 10, 10);
+    holder (18, 3.2, 27, 10, 10);
+}
+
+// For 26.3mm PE-AL-PE
+translate ([0, 39, 13/2]) {
+    translate ([40, 0, 0])
+        holder (26.3, 4.2, 38, 13, 13);
+    holder (26.3, 4.2, 38, 13, 13);
+    translate ([-40, 0, 0])
+        holder (26.3, 4.2, 38, 13, 13);
+}
+
+// For RG-213 cable
+translate ([0, -25, 4]) {
+    holder (9.7, 3.2, 13.5, 9, 8);
+    translate ([15, 0, 0])
+        holder (9.7, 3.2, 13.5, 9, 8);
+    translate ([30, 0, 0])
+        holder (9.7, 3.2, 13.5, 9, 8);
+}
