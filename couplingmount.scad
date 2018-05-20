@@ -34,6 +34,6 @@ module couplingmount (l=100, w=w, t=2.5, nut1=m4, nut2=m3)
 }
 
 translate ([0, 0, 0])
-    couplingmount ($fa=3, $fs=0.5);
+    couplingmount (nut1=m3, $fa=3, $fs=0.5);
 translate ([0, w+2, 0])
     couplingmount ($fa=3, $fs=0.5);
