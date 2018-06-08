@@ -74,7 +74,7 @@ module clip (d, bw, cw, nl)
             translate ([0, bw / 2, 0]) {
                 translate ([0, 0, -cw / 2])
                     cube ([cw, bw, cw], center = true);
-                translate ([0, 2.5 - bw / 2 + nl, nh / 2 + e])
+                translate ([0, 2.5 - bw / 2 + nl, nh / 2 - e])
                     cube ([cw, 5, nh + e], center = true);
             }
         }
@@ -140,6 +140,6 @@ if (test) {
 if (mount) {
     translate ([-w, 0, 0])
         mount  (h, w, d, angle, nut);
-    translate ([ w, 0, 0])
-        mount  (h, w, d, angle, nut);
+//    translate ([ w, 0, 0])
+//        mount  (h, w, d, angle, nut);
 }
