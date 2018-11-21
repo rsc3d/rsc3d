@@ -125,13 +125,13 @@ module holder (dia, screw, l, w, h, screwratio=5/3, scr_vert=true)
 //}
 
 // For 26.3mm PE-AL-PE with 3mm (metric) screw
-for (k = [35, -5]) {
+for (k = [35, -5, -45]) {
     translate ([k, 35, 0])
         holder (26.3, 3.2, 38, 13, 13, 5.75/3);
 }
 
 // For RG-213 cable
-for (k = [0, 15, 30]) {
-    translate ([k, 0, 0])
-        holder (9.7, 3.2, 13.5, 9, 8, scr_vert=false);
-}
+//for (k = [0, 15, 30]) {
+//    translate ([k, 0, 0])
+//        holder (9.7, 3.2, 13.5, 9, 8, scr_vert=false);
+//}
