@@ -1,6 +1,8 @@
-e = 0.001;
+e  = 0.01;
+h1 = 7.5;
+l  = 45;
 module lamppart
-    (d1 = 17, h1 = 7.5, di = 8, l = 45, t = 21, d2 = 9.5, lh = 28, d3 = 7)
+    (d1 = 17, h1 = h1, di = 8, l = l, t = 21, d2 = 9.5, lh = 28, d3 = 7)
 {
     difference () {
         union () {
@@ -21,4 +23,14 @@ module lamppart
     }
 }
 
-lamppart ($fa = 6, $fs = .5);
+difference () {
+    union () {
+        translate ([0, 0, -h1])
+            lamppart ($fa = 6, $fs = .5);
+        translate ([0, 3*h1, h1])
+            rotate ([180, 0, 0])
+                lamppart ($fa = 6, $fs = .5);
+    }
+    translate ([0, 0, -1.5*l+e])
+        cube (3*l, center=true);
+}
