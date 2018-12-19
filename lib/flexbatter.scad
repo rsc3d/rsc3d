@@ -168,18 +168,18 @@ r = d/5+2*ws; // linear spring length (depends on sline() call!)
          }
 
          // engrave battery symbol
-	 translate([w+l/2,d/4+1,w])cube([l/5,d/4.5,4*eh],true);
-	 translate([w+l/2+l/10,d/4+1,w])cube([d/7,d/10,4*eh],true);
-	 // engrave plus symbol
-	 sy = (l>12*shd)?1:-1;
+         translate([w+l/2,d/4+1,w])cube([l/5,d/4.5,4*eh],true);
+         translate([w+l/2-l/10,d/4+1,w])cube([d/7,d/10,4*eh],true);
+         // engrave plus symbol
+         sy = (l>12*shd)?1:-1;
          { // for short batteries +- on the side
-	    translate([w+l/2+l/(sy>0?5:10),sy*(d/4+1),w]){
-	       cube([1,d/4,4*eh],true);
-	       cube([d/4,1,4*eh],true);
+            translate([w+l/2-l/(sy>0?5:10),sy*(d/4+1),w]){
+               cube([1,d/4,4*eh],true);
+               cube([d/4,1,4*eh],true);
             }
-	 // engrave minus symbol
-	    translate([w+l/2-l/(sy>0?5:10),sy*(d/4+1),w])
-	       cube([1,d/4,4*eh],true);
+         // engrave minus symbol
+            translate([w+l/2+l/(sy>0?5:10),sy*(d/4+1),w])
+               cube([1,d/4,4*eh],true);
          }
    
          //correction for middle separators
