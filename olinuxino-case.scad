@@ -37,7 +37,7 @@ hw  = 15;   // Width of HDMI
 hh  = 6;    // Height of HDMI above PCB
 hd  = 13;   // Depth of HDMI
 hcw = 20;   // Width of HDMI Connector
-hch = 12;   // Height of HDMI Connector
+hch = 13;   // Height of HDMI Connector
 rv  =  m3 [nut_diameter_low];          // additional reinforcement for nuts
 rz  =  m3 [screw_head_channel] / 2;    // support at holes
 ss  =  (m3 [screw_channel] - 0.5) / 2; // fit in board holes
@@ -55,6 +55,7 @@ module bottom
     , ri=ri, ro=ro, rv=rv, rz=rz, ss=ss
     )
 {
+    hdmih = t+ha+hl+hb - (hch - hh) / 2;
     difference () {
         union () {
             difference () {
@@ -130,8 +131,8 @@ module bottom
                     cylinder (r=pd/2, h=5*t);
             // HDMI
             if (hdmi) {
-                translate ([-2*t, hp - (hcw - hw) / 2, t+ha+hl+hb+e])
-                    cube ([8*t, hcw, h]);
+                translate ([-2*t, hp - (hcw - hw) / 2, hdmih])
+                    cube ([8*t, hcw, 2*h]);
             }
         }
     }
@@ -145,6 +146,7 @@ module top
     , mu=mu
     )
 {
+    hdmih = h - hch + (hch - hh) / 2;
     difference () {
         union () {
             render () hull () {
@@ -161,26 +163,32 @@ module top
             }
             translate ([t, t, 0]) {
                 for (x = [rxl, l-rxr]) {
+                    // screw guides round part
                     for (y = [rd-rw/2, w-(rd-rw/2)]) {
                         translate ([x, y, ro-t/2])
                             cylinder (r=rw/2, h=t/2+h/2);
                     }
+                    // screw guides
                     for (y = [(rd-rw/2-mu)/2+mu, w-(rd-rw/2-mu)/2-mu]) {
                         translate ([x, y, ro+(h/2)/2])
                             cube ([rw, rd-rw/2-mu, h/2], center=true);
                     }
                 }
+                // Side-guide
                 for (y = [mu, w-t-mu]) {
                     translate ([rxl, y, ro-t/2])
                         cube ([rr + rw, t, (h+t)/2]);
                 }
+                // End guide at hdmi side
                 translate ([mu, (w-rr)/2, ro-t/2])
                     cube ([2*t, rr, (h/2+t)/2]);
+                // middle guide end cylinders
                 for (y = [hy, w-hy]) {
                     translate ([rxl-hx, y, ro-e]) {
                         cylinder (r=rz, h=h);
                     }
                 }
+                // middle guide
                 translate ([rxl-hx-t/2, hy, ro-e])
                     cube ([t, w-2*hy, h-hl]);
                 // Ethernet "wall" (above)
@@ -188,7 +196,7 @@ module top
                     cube ([ed+t, ew-2*E, eh]);
                 if (hdmi) {
                     translate ([-t, w - (hp - (hcw - hw) / 2) - hcw + E, ro-e])
-                        cube ([hd+t, hcw-2*E, hh]);
+                        cube ([hd+t, hcw-2*E, hdmih]);
                 }
             }
         }
