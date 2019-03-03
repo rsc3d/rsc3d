@@ -1,5 +1,7 @@
 include <nuts.scad>
 
+e   = 0.01; // Epsilon
+E   = 0.1;  // big Epsilon :-)
 l   = 95.8; // length of board including connectors
 w   = 62;   // width of board
 hl  =  2;   // height of highest part on bottom of board
@@ -19,6 +21,7 @@ ri  =  1.5; // Radius of inner rounding
 ew  = 14.8; // width of ethernet
 ep  =  6;   // position of ethernet
 eh  =  3;   // ethernet from top (max height - eh)
+ed  = 21;   // ethernet depth
 uw  =  7.5; // width of usb
 u1p = 23.5; // position of first usb
 u2p = 33;   // position of second usb
@@ -27,6 +30,14 @@ pp  =  9.5; // position of plug
 ph  =  6.5; // height of plug
 ah  =  0;   // Additional depth of screw head on top
 mu  =  0.3; // Top part: move from edge to fit top
+// HDMI is conditional with 'hdmi' variable
+hdmi = true;
+hp  = 19;   // Position of HDMI
+hw  = 15;   // Width of HDMI
+hh  = 6;    // Height of HDMI above PCB
+hd  = 13;   // Depth of HDMI
+hcw = 20;   // Width of HDMI Connector
+hch = 12;   // Height of HDMI Connector
 rv  =  m3 [nut_diameter_low];          // additional reinforcement for nuts
 rz  =  m3 [screw_head_channel] / 2;    // support at holes
 ss  =  (m3 [screw_channel] - 0.5) / 2; // fit in board holes
@@ -70,6 +81,7 @@ module bottom
                     }
             }
             translate ([t, t, 0]) {
+                // Recess of board; screws
                 for (x = [rxl, l-rxr]) {
                     for (y = [rd-rw/2, w-(rd-rw/2)]) {
                         translate ([x, y, t/2])
@@ -82,22 +94,24 @@ module bottom
                             cube ([rw, rd-rw/2, hl+hb+ha+h/2], center=true);
                     }
                 }
+                // Holes in board
                 for (y = [hy, w-hy]) {
-                    translate ([rxl-hx, y, t-0.01]) {
+                    translate ([rxl-hx, y, t-e]) {
                         cylinder (r=rv, h=ha);
                         cylinder (r=ss, h=ha+hb+hl);
                         cylinder (r=rz, h=ha+hl);
                     }
                 }
                 // Support position
-                translate ([rxl-hx+sx, w/2, t-0.01])
+                translate ([rxl-hx+sx, w/2, t-e])
                     cylinder (r=rz, h=ha+hl);
             }
         }
         translate ([t, t, 0]) {
+            // Screw holes with nuts at bottom
             for (x = [rxl, l-rxr]) {
                 for (y = [rd-rw/2, w-(rd-rw/2)]) {
-                    translate ([x, y, -0.01]) {
+                    translate ([x, y, -e]) {
                         rotate ([0, 0, 90])
                             nut_hole (m3, m3 [nut_height]);
                         cylinder (r=m3 [screw_channel]/2, h=2*h);
@@ -108,12 +122,17 @@ module bottom
             translate ([rxl-hx-rz-ss, hy, t + ha + rz])
                 cube (2*rz, center=true);
             // Ethernet, USB1, USB2
-            translate ([l-6*t, ep, t+ha+hl+hb+0.01])
+            translate ([l-6*t, ep, t+ha+hl+hb+e])
                 cube ([8*t, u2p+uw-ep, h]);
             // Plug
             translate ([l-2*t, w-pp, t+ha+hl+hb+ph])
                 rotate ([0, 90, 0])
                     cylinder (r=pd/2, h=5*t);
+            // HDMI
+            if (hdmi) {
+                translate ([-2*t, hp - (hcw - hw) / 2, t+ha+hl+hb+e])
+                    cube ([8*t, hcw, h]);
+            }
         }
     }
 }
@@ -158,21 +177,25 @@ module top
                 translate ([mu, (w-rr)/2, ro-t/2])
                     cube ([2*t, rr, (h/2+t)/2]);
                 for (y = [hy, w-hy]) {
-                    translate ([rxl-hx, y, ro-0.01]) {
+                    translate ([rxl-hx, y, ro-e]) {
                         cylinder (r=rz, h=h);
                     }
                 }
-                translate ([rxl-hx-t/2, hy, ro-0.01])
+                translate ([rxl-hx-t/2, hy, ro-e])
                     cube ([t, w-2*hy, h-hl]);
-                // Ethernet wall (above)
-                translate ([l, w-(ew)-(ep+0.01), ro-0.01])
-                    cube ([t, ew-0.02, eh]);
+                // Ethernet "wall" (above)
+                translate ([l-ed, w-(ew)-(ep+E), ro-e])
+                    cube ([ed+t, ew-2*E, eh]);
+                if (hdmi) {
+                    translate ([-t, w - (hp - (hcw - hw) / 2) - hcw + E, ro-e])
+                        cube ([hd+t, hcw-2*E, hh]);
+                }
             }
         }
         translate ([t, t, 0]) {
             for (x = [rxl, l-rxr]) {
                 for (y = [rd-rw/2, w-(rd-rw/2)]) {
-                    translate ([x, y, -0.01]) {
+                    translate ([x, y, -e]) {
                         cylinder (r=rz, h=m3[screw_head_height]+ah);
                         cylinder (r=m3 [screw_channel]/2, h=2*h);
                     }
@@ -182,9 +205,19 @@ module top
     }
 }
 
-rotate ([0, 0, 90]) {
-    translate ([0,  5, 0])
-        bottom ($fa=3, $fs=0.5);
-    translate ([0, -(w+2*t), 0])
-        top    ($fa=3, $fs=0.5);
+test = 0;
+if (test) {
+    // Test fit
+    bottom ($fa=3, $fs=0.5);
+    translate ([0, w + 2*t, h + hl + hb + ha + 2*t + t])
+        rotate ([180, 0, 0])
+            top    ($fa=3, $fs=0.5);
+} else {
+    rotate ([0, 0, 90]) {
+        translate ([0,  5, 0])
+            bottom ($fa=3, $fs=0.5);
+        translate ([0, -(w+2*t), 0])
+            top    ($fa=3, $fs=0.5);
+    }
 }
+
