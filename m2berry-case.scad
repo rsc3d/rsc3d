@@ -199,7 +199,7 @@ module top ()
                 cube ([5*t, uw, h]);
         }
         // Ethernet "wall" above
-        translate ([t, t+uw+eur, t-e])
+        translate ([t, t, t-e])
             cube ([ed, w - (uw+eur), h-eh+e]);
         // HDMI "wall" above
         translate ([hdmiwallpos+t/2, hd/2+t, t+(h-hdmiwally)/2-e])
