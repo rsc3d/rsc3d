@@ -12,7 +12,7 @@ w   = 58;     // width of board (excl conn) + 2mm
 hl  =  2;     // height of highest part on bottom of board
 hb  =  1.1;   // height (width) of board (pcb)
 ha  =  1;     // additional height above nut (below pcb at floor)
-h   = 17;     // height of highest part on top of board
+h   = 18.5;   // height of highest part on top of board (USB)
 t   =  2.5;   // thickness of walls of box
 hu  = t + ha + hb + hl;
 ri  =  1.5;   // Radius of inner rounding
@@ -20,7 +20,6 @@ ro  = ri + t; // outer rounding
 // All measures from left or right include the 1mm space at wall
 eur =  2.5;   // Ethernet/USB block from right
 eul =  3.5;   // Ethernet/USB block from left
-uh  = 15.3;   // Height of USB
 eh  = 13.5;   // Height of Ethernet
 ed  = 20;     // Ethernet Depth
 uw  = 33;     // Width of two USB
@@ -33,6 +32,7 @@ rv  =  m3 [nut_diameter_low]; // additional reinforcement for nuts
 cw  =  6;     // Width of cylinder around screw
 pp  = 32;     // HeadPhone from end
 ph  =  3;     // HeadPhone height (center)
+pd  = 10.5;   // Diameter of HeadPhone Jack
 hp  = 46;     // Position of HDMI
 hh  =  6;     // Height of HDMI above PCB
 hw  = 15;     // Width of HDMI
@@ -51,6 +51,7 @@ uow = 12;     // Width of USB-OTG Plug
 uoh =  8;     // Height of USB-OTG Plug
 oh  =  3;     // Height of OTG
 
+echo (t + hl + hb + ha + h);
 module bottom ()
 {
     difference () {
@@ -113,6 +114,10 @@ module bottom ()
                 }
             }
         }
+        // HeadPhone
+        translate ([pp+t, 3*t+w-E, t+hl+hb+ha+ph])
+            rotate ([90, 0, 0])
+                cylinder (h=2*t, r=pd/2);
         // USB OTG (power supply)
         translate ([uop+t, w+3*t-E, t+hl+hb+ha+uoy])
             cube ([uow, 4*t, uoh], center = true);
@@ -186,6 +191,10 @@ module top ()
             translate ([rp+t, 3*t, h-rh])
                 rotate ([90, 0, 0])
                     cylinder (h=5*t, r=rd/2);
+            // HeadPhone
+            translate ([pp+t, t+E, h-ph])
+                rotate ([90, 0, 0])
+                    cylinder (h=5*t, r=pd/2);
             // USB OTG (power supply)
             translate ([uop+t, -t+E, h - uoy])
                 cube ([uow, 4*t, uoh], center = true);
@@ -193,14 +202,14 @@ module top ()
             translate ([hdx+t, t, h - hdy])
                 cube ([hcw, 5*t, hch], center = true);
             // Ethernet, USB
-            translate ([-t-e, eul+t, h-eh])
+            translate ([-t-e, eul+t, h-eh-E])
                 cube ([5*t, w-eur-eul, h]);
             translate ([-t-e, -uw+w+t-eur, t])
                 cube ([5*t, uw, h]);
         }
         // Ethernet "wall" above
         translate ([t, t, t-e])
-            cube ([ed, w - (uw+eur), h-eh+e]);
+            cube ([ed, w - (uw+eur), h-eh-t-E]);
         // HDMI "wall" above
         translate ([hdmiwallpos+t/2, hd/2+t, t+(h-hdmiwally)/2-e])
             cube ([hdmiwall-t/2, hd, h-hdmiwally+e], center=true);
