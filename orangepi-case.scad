@@ -129,7 +129,7 @@ module bottom ()
             }
         }
         // USB OTG (power supply)
-        translate ([l+3*t-E, uop+t, t+hl+hb+ha+uoy])
+        translate ([l+3*t-E-(l-w), uop+t, t+hl+hb+ha+uoy])
             cube ([4*t, uow, uoh], center = true);
         // HeadPhone
         translate ([l+E, pp+t, hu+ph])
@@ -217,6 +217,9 @@ module top ()
             translate ([l+E, w-pp+t, h-ph])
                 rotate ([0, 90, 0])
                     cylinder (h=2*t, r=pd/2);
+            // USB OTG (power supply)
+            translate ([l+3*t-E-(l-w), w-uop+t, h-uoy])
+                cube ([4*t, uow, uoh], center = true);
 	    // Upper USB
 	    translate ([l+3*t-E, w-upx+t, h-upz])
 		cube ([4*t, upw, uph], center = true);
