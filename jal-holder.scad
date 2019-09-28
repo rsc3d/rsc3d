@@ -30,10 +30,27 @@ module holder
             cube ([l, w, h], center = true);
             rotate ([0, 90 - phi, 0])
                 translate ([l2/2, 0, -d/2])
-                    difference () {
-                        cube ([l2, w, d], center = true);
-                        translate ([l2/2-recd/2, 0, 0])
-                            cube ([recd+e, recw, 3*d], center = true);
+                    union () {
+                        difference () {
+                            hull () {
+                                for (x = [l2/2, -l2/2]) {
+                                    for (y = [-w/2+d/2, w/2-d/2]) {
+                                        translate ([x, y, 0])
+                                            sphere (r=d/2);
+                                    }
+                                }
+                            }
+                            translate ([l2/2-recd/2, 0, 0])
+                                cube ([recd+e, recw, 3*d], center = true);
+                        }
+                        for (x = [l2/2, l2/4]) {
+                            hull () {
+                                for (y = [-w/2+d/2, w/2-d/2]) {
+                                    translate ([x, y, 0])
+                                        #sphere (r=d/2);
+                                }
+                            }
+                        }
                     }
             translate ([c1w/2 + h/2 * tan (phi), 0, -(c1h/2+h/2)])
                 cube ([c1w, w, c1h], center = true);
