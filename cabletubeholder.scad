@@ -131,7 +131,7 @@ for (k = [35, -5, -45]) {
 }
 
 // For RG-213 cable
-//for (k = [0, 15, 30]) {
-//    translate ([k, 0, 0])
-//        holder (9.7, 3.2, 13.5, 9, 8, scr_vert=false);
-//}
+for (k = [-5]) {
+    translate ([k, 40, 0])
+        holder (9.7, 3.2, 13.5, 9, 8, scr_vert=false);
+}
