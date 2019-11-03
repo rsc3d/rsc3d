@@ -38,13 +38,14 @@ module nut_hole (nut, h)
 // height/width only depends on the given nut.
 module countersunk_screw_hole (nut, h, h2 = 0)
 {
+    r2 = (nut [screw_channel] * 1.1) / 2;
     cylinder
         ( r1 = (nut [screw_head_channel] * 1.1) / 2
-        , r2 = (nut [screw_channel]      * 1.1) / 2
+        , r2 = r2
         , h  = nut [screw_head_height]  * 1.05
         );
-    cylinder (r = nut [screw_channel] / 2, h = h + nut [screw_head_height]);
-    translate ([0, 0, -h2])
+    cylinder (r = r2, h = h + nut [screw_head_height]);
+    translate ([0, 0, -h2+e])
         cylinder (r = nut [screw_head_channel] * 1.1 / 2, h = h2);
 }
 //translate ([5, 0, 0])
