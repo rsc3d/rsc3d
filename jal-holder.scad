@@ -5,13 +5,13 @@ e = 0.01;
 module holder
     ( w=11   // width
     , l=25.5    // length of groundplane
-    , l2=21.5   // length of standing part
+    , l2=20.0   // length of standing part
     , h=4.5     // height of groundplane
     , d=3       // thickness of standing part
     , h1=4.5    // distance hole 1
     , h2=5.5    // distance hole 2
     , recw=2    // Recess width
-    , recd=9    // Recess depth
+    , recd=8    // Recess depth
     , nut=m3    // Nut parameters for holes
     , phi=90-77 // Angle of standing part
     )
@@ -32,14 +32,7 @@ module holder
                 translate ([l2/2, 0, -d/2])
                     union () {
                         difference () {
-                            hull () {
-                                for (x = [l2/2, -l2/2]) {
-                                    for (y = [-w/2+d/2, w/2-d/2]) {
-                                        translate ([x, y, 0])
-                                            sphere (r=d/2);
-                                    }
-                                }
-                            }
+                            cube ([l2, w, d], center = true);
                             translate ([l2/2-recd/2, 0, 0])
                                 cube ([recd+e, recw, 3*d], center = true);
                         }
@@ -47,7 +40,7 @@ module holder
                             hull () {
                                 for (y = [-w/2+d/2, w/2-d/2]) {
                                     translate ([x, y, 0])
-                                        #sphere (r=d/2);
+                                        sphere (r=d/2);
                                 }
                             }
                         }
@@ -77,5 +70,10 @@ module holder
     }
 }
 
-rotate ([90, 0, 0])
-    holder ($fa = 1, $fs = .5);
+for (x = [-27, 0]) {
+    for (y = [-27, 0]) {
+        translate ([x, y, 0])
+            rotate ([90, 0, 0])
+                holder ($fa = 1, $fs = .5);
+    }
+}
