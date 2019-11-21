@@ -95,4 +95,9 @@ module lm8uu_holder()
     }
 }
 
-lm8uu_holder($fa=3, $fs=0.5);
+for (x=[-lm8uu_holder_width-3, 0]) {
+    for (y=[-lm8uu_holder_length-3, 0]) {
+        translate ([x, y, 0])
+            lm8uu_holder($fa=3, $fs=0.5);
+    }
+}
