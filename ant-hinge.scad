@@ -50,7 +50,7 @@ module antenna_hinge (r_i=r_i, h=h, t=t, dr=dr, h_t=h_t, dh=dh, wd=wd, nut=nut)
             translate ([-r_o+t, 0, z])
                 rotate ([0, 90, 0])
                     countersunk_screw_hole (nut, h=3*r_o, h2=r_o);
-            translate ([r_o/2, 0, z])
+            translate ([r_o/2-t, 0, z])
                 rotate ([0, 90, 0])
                     nut_hole (nut, h=r_o);
         }
