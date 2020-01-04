@@ -30,7 +30,10 @@ lp  = max (bs, dr+t+2*dh+h_t+r58) + dr;                // lower part
 h   = up + lp;                                         // Overall height
 
 // Generate the mounting brackets
-brackets = true;
+do_brackets   = true;
+do_left_part  = true;
+do_right_part = true;
+do_plate      = true;
 
 module antenna_hinge (r_i=r_i, h=h, t=t, dr=dr, h_t=h_t, dh=dh, wd=wd, nut=nut)
 {
@@ -105,23 +108,27 @@ module visible_structure ()
 
 module printable_structure ()
 {
-    difference () {
-        translate ([0,  (r_i+3*t), 0])
-            rotate ([0, 90, 0])
-                antenna_hinge ($fa=3, $fs=0.5);
-        translate ([0, 0, -h])
-            cube ([3*h, 2*h, 2*h], center=true);
+    if (do_right_part) {
+        difference () {
+            translate ([0,  (r_i+3*t), 0])
+                rotate ([0, 90, 0])
+                    antenna_hinge ($fa=3, $fs=0.5);
+            translate ([0, 0, -h])
+                cube ([3*h, 2*h, 2*h], center=true);
+        }
     }
 
-    difference () {
-        translate ([h, -(r_i+3*t), 0])
-            rotate ([0, -90, 0])
-                antenna_hinge ($fa=3, $fs=0.5);
-        translate ([0, 0, -h])
-            cube ([3*h, 2*h, 2*h], center=true);
+    if (do_left_part) {
+        difference () {
+            translate ([h, -(r_i+3*t), 0])
+                rotate ([0, -90, 0])
+                    antenna_hinge ($fa=3, $fs=0.5);
+            translate ([0, 0, -h])
+                cube ([3*h, 2*h, 2*h], center=true);
+        }
     }
 
-    if (brackets) {
+    if (do_brackets) {
         for (p= [0, 180]) {
             translate ([h/2 + p/10, 5*r_i + p/40, 0])
                 rotate ([0, 0, p])
@@ -129,8 +136,10 @@ module printable_structure ()
         }
     }
 
-    translate ([-h/9, 4.5*r_i, 0])
-        bnc_plate ();
+    if (do_plate) {
+        translate ([-h/9, 4.5*r_i, 0])
+            bnc_plate ();
+    }
 }
 
 visible = false;
