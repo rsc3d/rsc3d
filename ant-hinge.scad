@@ -71,9 +71,14 @@ module antenna_hinge (r_i=r_i, h=h, t=t, dr=dr, h_t=h_t, dh=dh, wd=wd, nut=nut)
             rotate ([-90, 0, 0])
                 cylinder (r=r58/2, h=r_o);
     }
+    // Support
     translate ([0, 0, (lp+t)/2-.5]) {
-        cube ([2*r_i, 1, lp+t-.5], center=true);
-        cube ([2, 2, lp+t-.5], center=true);
+        for (y= [-t/2-0.5, t/2+0.5]) {
+            translate ([0, y, 0]) {
+                cube ([2*r_i, 1, lp+t-.5], center=true);
+                cube ([2, 5.5, lp+t-.5], center=true);
+            }
+        }
     }
 }
 
