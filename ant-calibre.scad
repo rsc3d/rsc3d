@@ -2,7 +2,12 @@ include <nuts.scad>
 
 e = 0.01;
 
-module antenna_calibre (dipole_r = 31, wd = 1.5, h = 5, hh = 10.3, nut = m3)
+dipole_r = 36.4;
+wd       =  1.5;
+h        =  4;
+hh       =  wd + .5;
+
+module antenna_calibre (dipole_r = dipole_r, wd = wd, h = h, hh = hh, nut = m3)
 {
     dia = 2 * dipole_r;
     ro  = (dia - wd) / 2;
@@ -23,8 +28,7 @@ module antenna_calibre (dipole_r = 31, wd = 1.5, h = 5, hh = 10.3, nut = m3)
     }
 }
 
-dipole_r = 31;
 for (i=[0, 2 * dipole_r + 3]) {
     translate ([i, 0, 0])
-        antenna_calibre (dipole_r = dipole_r, $fa = 2, $fs = .5);
+        antenna_calibre ($fa = 2, $fs = .5);
 }
