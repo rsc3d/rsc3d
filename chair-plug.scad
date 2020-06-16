@@ -35,4 +35,13 @@ module fourhalves (d1=d1, d2=d2, d3=d3, h1=h1, h2=h2)
 //fourhalves ($fa = 6, $fs = .5);
 
 // bigger variant
-fourhalves (d1=14, d2=17.5, d3=19, $fa = 6, $fs = .5);
+// fourhalves (d1=14, d2=17.5, d3=19, $fa = 6, $fs = .5);
+//translate ([-5, 68, 0])
+//    rotate([0, 0, 180])
+//        fourhalves (d1=14, d2=17.5, d3=19, $fa = 6, $fs = .5);
+
+// Even bigger variant
+fourhalves (d1=15, d2=18.5, d3=20, $fa = 6, $fs = .5);
+translate ([-5, 71.8, 0])
+    rotate([0, 0, 180])
+        fourhalves (d1=15, d2=18.5, d3=20, $fa = 6, $fs = .5);
