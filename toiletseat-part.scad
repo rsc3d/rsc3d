@@ -5,13 +5,14 @@ d1  = 24;
 d2  = 17;
 h   = 13.5;
 t   =  4.8;
-l   = 47.5;
-hd  = 22.5;
+l   = 48.5;
+hd1 = 25.0;
+hd2 = 22.5;
 sh  =  4.2;
 sw  =  8.2;
 swh =  2;
-ri  =  6;
-wi  =  8;
+ri  =  6.75;
+wi  =  9.5;
 di  = 12;
 module seatpart (d1=d1, d2=d2, h=h, t=t, l=l, di=12, wi=wi)
 {
@@ -37,12 +38,12 @@ module seatpart (d1=d1, d2=d2, h=h, t=t, l=l, di=12, wi=wi)
                 rotate ([0, 0, a])
                     cube ([d2/2 + t/2, t, h]);
         }
-        translate ([d2/2-e, d2/2 + hd, h/2])
+        translate ([d2/2-e, d2/2 + hd1, h/2])
             rotate ([0, 90, 0]) {
                 cylinder (r2 = sh/2, r1 = sw/2, h = swh);
                 cylinder (r = sh/2, h=2*d2);
             }
-        translate ([d2/2-e, d2/2 + 2 * hd, h/2])
+        translate ([d2/2-e, d2/2 + hd1 + hd2, h/2])
             rotate ([0, 90, 0]) {
                 cylinder (r2 = sh/2, r1 = sw/2, h = swh);
                 cylinder (r = sh/2, h=2*d2);
@@ -54,8 +55,8 @@ module seatpart (d1=d1, d2=d2, h=h, t=t, l=l, di=12, wi=wi)
                     translate ([0, 0, di/2])
                         cube ([wi, 3*ri, di], center = true);
                 }
-                // support
-                for (x = [-wi/4, 0, wi/4]) {
+                // Support
+                for (x = [-wi/5, wi/5]) {
                     translate ([x, 0, di/2])
                         cube ([.7, 3*ri, 2*di], center = true);
                 }
