@@ -48,7 +48,7 @@ module carpart
                 translate ([0, yy * (iy/2 + hu), h1 - hs])
                     rotate ([0, 0, yy*90])
                         rotate ([0, 45.1, 0])
-                            sphere_segment (2*(vb+vs), hb+hs, 90.2);
+                            sphere_segment1 (2*(vb+vs), hb+hs, 90.2);
             }
         }
         for (xx = [-1:2:1]) {
