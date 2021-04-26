@@ -1,5 +1,5 @@
 // Sealing ring for water tube
-module dring (do=18.5, di=15.5, hg=11, dg=3, ds=2.5, ug=1)
+module dring (do=21, di=16, hg=11, dg=3, ds=2.5, ug=1)
 {
     th = hg - (dg + ds + ug);
     difference () {
