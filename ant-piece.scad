@@ -27,7 +27,7 @@ module antenna_piece (l=30, t=thickn, h=height, hh=3, wd1=dia1, wd2=dia2, phi=60
                     cube ([t, ll, h], center=true);
             }
         }
-        for (y = [0, l-(1.25*dia2 + t)]) {
+        for (y = [0, l-(1.25*wd2 + t)]) {
             rotate ([0, 0, phi/2 + (y?0:90)]) {
                 translate ([-l, y, h-hh])
                     rotate ([0, 90, 0])
