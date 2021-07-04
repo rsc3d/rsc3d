@@ -102,36 +102,67 @@ module holder (dia, screw, l, w, h, screwratio=5/3, scr_vert=true)
     }
 }
 
-// dual holder
-// translate ([-17 + 0.001, 0, 0])
-//     holder (24.5, 5, 34, 13, 12);
-// translate ([ 17 - 0.001, 0, 0])
-//     holder (24.5, 5, 34, 13, 12);
+// setting VARIANT using the -D option to openscad overrides this!
+VARIANT = "Tube_24.5mm";
+// Set to 60 via -D option to increase distance between cable holders
+// for Variant Tube_35mm_3mm:6
+TUBE_DISTANCE = 0;
 
-// Cable holder with 3mm screw
-// For 8mm cable
-// holder (8, 3.2, 11.5, 9, 8);
-// For 9mm cable
-// holder (9, 3.2, 12.5, 9, 8);
+echo (VARIANT);
+echo (TUBE_DISTANCE);
 
-// Single holder
-//holder (24.5, 5, 34, 13, 12);
-
-// For 18mm copper tubing
-//translate ([0, 0, 5]) {
-//    translate ([29, 0, 0])
-//    holder (18, 3.2, 27, 10, 10);
-//    holder (18, 3.2, 27, 10, 10);
-//}
-
-// For 26.3mm PE-AL-PE with 3mm (metric) screw
-for (k = [35, -5, -45]) {
-    translate ([k, 35, 0])
-        holder (26.3, 3.2, 38, 13, 13, 5.75/3);
+if (VARIANT == "Tube_24.5mm") {
+    // Single holder
+    holder (24.5, 5, 34, 13, 12);
+} else if (VARIANT == "Tube_24.5mm_2") {
+    // dual holder 24.5mm
+    translate ([-17 + 0.001, 0, 0])
+        holder (24.5, 5, 34, 13, 12);
+    translate ([ 17 - 0.001, 0, 0])
+        holder (24.5, 5, 34, 13, 12);
 }
 
-// For RG-213 cable
-for (k = [-5]) {
-    translate ([k, 40, 0])
-        holder (9.7, 3.2, 13.5, 9, 8, scr_vert=false);
+// Cable holder with 3mm screw
+if (VARIANT == "Cable_8mm") {
+    // For 8mm cable
+    holder (8, 3.2, 11.5, 9, 8);
+} else if (VARIANT == "Cable_9mm") {
+    // For 9mm cable
+    holder (9, 3.2, 12.5, 9, 8);
+}
+
+
+if (VARIANT == "Tube_18mm:2") {
+    // For 18mm copper tubing
+    translate ([0, 0, 5]) {
+        translate ([29, 0, 0])
+        holder (18, 3.2, 27, 10, 10);
+        holder (18, 3.2, 27, 10, 10);
+    }
+}
+
+// For 26.3mm PE-AL-PE with 3mm (metric) screw
+if (VARIANT == "Tube_35mm_3mm:3" || VARIANT == "Tube_35mm_3mm:6") {
+    for (k = [35, -5, -45]) {
+        translate ([k, 35, 0])
+            holder (26.3, 3.2, 38, 13, 13, 5.75/3);
+    }
+}
+if (VARIANT == "Tube_35mm_3mm:6") {
+    translate ([-10, -TUBE_DISTANCE, 0]) {
+        rotate ([0, 0, 180]) {
+            for (k = [35, -5, -45]) {
+                translate ([k, 35, 0])
+                    holder (26.3, 3.2, 38, 13, 13, 5.75/3);
+            }
+        }
+    }
+}
+
+// For RG-213 cable with vertical screw
+if (VARIANT == "Cable_RG213" || VARIANT == "Cable_RG213:4") {
+    for (k = (VARIANT == "Cable_RG213" ? [-5] : [-5, -20, -35, -50])) {
+        translate ([k, 40, 0])
+            holder (9.7, 3.2, 13.5, 9, 8, scr_vert=false);
+    }
 }
