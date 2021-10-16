@@ -1,19 +1,22 @@
 include <nuts.scad>;
 
-eps = 0.01;
+eps  = 0.01;
 
-l   = 42;
-d   =  5;
-wl  =  3.5;
-wr  =  2.5;
-wo  =  4.5;
-h   = 10;
-t   =  2;
-cw  = 10;
-ch  =  3;
-nut = m3;
-nh  = nut [nut_height];
-ft  =  3;
+l    = 42;    // Distance between holes of Orange-Pi
+d    =  5;    // Distance above and below hole
+wl   =  3.5;
+wr   =  2.5;
+wo   =  4.5;
+h    = 10;
+t    =  2;
+cw   = 10;
+ch   =  3;
+nut  = m3;
+nh   = nut [nut_height];
+ft   =  3;
+// This is used to either print the foot-part or the mount part.
+// Use openscad -D option to chose.
+foot = false;
 
 module opi_mount
     ( l=l, d=d, wl=wl, wr=wr, wo=wo, wal=1, war=2, ha=6.5
@@ -95,7 +98,13 @@ module opi_foot
     }
 }
 
-//opi_mount ($fa = 2, $fs = .5);
-opi_foot ($fa = 2, $fs = .5);
-translate ([0, 40, 0])
+if (foot) {
     opi_foot ($fa = 2, $fs = .5);
+    translate ([0, 40, 0])
+        opi_foot ($fa = 2, $fs = .5);
+} else {
+    opi_mount ($fa = 2, $fs = .5);
+    translate ([0, 25, 0])
+        opi_mount ($fa = 2, $fs = .5);
+}
+
