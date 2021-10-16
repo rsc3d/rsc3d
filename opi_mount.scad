@@ -4,16 +4,16 @@ eps  = 0.01;
 
 l    = 42;    // Distance between holes of Orange-Pi
 d    =  5;    // Distance above and below hole
-wl   =  3.5;
-wr   =  2.5;
-wo   =  4.5;
-h    = 10;
-t    =  2;
-cw   = 10;
-ch   =  3;
+wl   =  3.5;  // Left distance from hole to edge
+wr   =  2.5;  // Right distance from hole to edge
+wo   =  4.5;  // Distance from hole to outer edge
+h    = 10;    // Height of mount
+t    =  2;    // Thickness of mount (plus nut thickness)
+cw   = 10;    // Width of cable hole
+ch   =  3;    // Height of cable hole
 nut  = m3;
 nh   = nut [nut_height];
-ft   =  3;
+ft   =  3;    // Foot thickness
 // This is used to either print the foot-part or the mount part.
 // Use openscad -D option to chose.
 foot = false;
