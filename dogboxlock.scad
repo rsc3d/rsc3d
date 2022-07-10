@@ -1,8 +1,8 @@
 include <nuts.scad>
 
 module lock
-    ( w=15, l=44.5, h=7
-    , hw=11, hl=15, hh=14
+    ( w=21, l=44.5, h=7
+    , hw=11, hl=15, hh=12
     , hod=3.5, hr1=2, hr2=3.5
     , d=7.5, ww=3
     , fhd=.5
@@ -22,8 +22,8 @@ module lock
             translate ([y, 0, -h/2 + hod])
                 cylinder (r=hr2, h=3*h);
         }
-        translate ([0, 2*ww, hh/2 + h/2 - fhd + fhd])
-            cube ([hl, 3*ww, hh], center=true);
+        translate ([0, 3*ww, hh/2 + h/2 - fhd + fhd])
+            cube ([hl, 5*ww, hh], center=true);
     }
 }
 
