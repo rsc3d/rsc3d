@@ -61,6 +61,8 @@ module holder (h, w, d, angle, hole_r, nut)
             endp (h, w, d, -angle, nut);
         }
         cylinder (r = hole_r + 0.5, h = 2 * d, center = true);
+        translate ([-3 * hole_r, 0, 0])
+            cube ([6 * hole_r, 2 * hole_r, 3 * d], center = true);
         translate ([h + h, 0, 0])
             cube (2 * h, center = true);
     }
@@ -140,6 +142,6 @@ if (test) {
 if (mount) {
     translate ([-w, 0, 0])
         mount  (h, w, d, angle, nut);
-//    translate ([ w, 0, 0])
-//        mount  (h, w, d, angle, nut);
+    translate ([ w, 0, 0])
+        mount  (h, w, d, angle, nut);
 }
