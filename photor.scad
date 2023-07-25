@@ -2,7 +2,7 @@
 
 eps = 0.01;
 
-module mount (r1 = 10, r2 = 5, h1 = 3, h2 = 8, rm = 3.5, r3 = 0.4)
+module mount (r1 = 10, r2 = 5, h1 = 3, h2 = 8, rm = 3.5, r3 = 0.8)
 {
     difference () {
         union () {
